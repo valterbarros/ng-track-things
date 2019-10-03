@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-list',
@@ -6,10 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-list.sass']
 })
 export class NewListPage implements OnInit {
+  listForm: FormGroup;
 
-  constructor() { }
+  constructor (private formBuilder: FormBuilder) {
+    this.listForm = formBuilder.group({
+      name: '',
+      description: ''
+    })
+  }
 
   ngOnInit() {
     console.log('oi')
+  }
+
+  onSubmit () {
+    console.log('ah não')
+    console.log(this.listForm.value)
   }
 }

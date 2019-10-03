@@ -1,21 +1,21 @@
-<form action="" formGroup="">
+<form action="" [formGroup]="listForm" (ngSubmit)="onSubmit()">
   <div id="create-list-container">
-    <input type="text" placeholder="Digite o nome da lista"> <br>
-    <textarea placeholder="Digite uma descrição"></textarea>
+    <input type="text" placeholder="Digite o nome da lista" formControlName="name"> <br>
+    <textarea placeholder="Digite uma descrição" formControlName="description"></textarea>
 
     <button id="add_sub_list">+</button>
 
     <div>
       Sublists: <br>
-      <input type="text">
+      <input type="text" value="plant a cactus">
       <button> - </button> <br>
       
-      <input type="text">
+      <input type="text" value="wash the car">
       <button> - </button>
     </div>
 
     <div id="footer-list">
-      <button type="submit"> Salvar </button>
+      <button class="success-button" type="submit"> Salvar </button>
     </div>
   </div>
 </form>
