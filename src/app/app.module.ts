@@ -17,4 +17,5 @@ import { NewListPage } from '../pages/lists/new-list/new-list';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
