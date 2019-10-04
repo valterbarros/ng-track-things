@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { firebaseDb } from '../../../providers/firebase'
 
 @Component({
   selector: 'app-new-list',
