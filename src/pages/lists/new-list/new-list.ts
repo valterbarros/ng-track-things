@@ -43,16 +43,14 @@ export class NewListPage implements OnInit {
 
   onSubmit () {
     const listParams = {
-      title: this.listForm.name,
-      repeat_days: this.repeatDays,
-      description: this.description,
-      deadline: this.deadline
+      title: this.listForm.value.title,
+      description: this.listForm.value.description
     }
 
     const batch = firebaseDb.batch()
     const listRef = firebaseDb.collection('lists').doc()
 
-    for (let subList of ruleForm.sub_lists) {
+    for (let subList of this.listForm.value.subLists) {
       let title = subList.title
       let listId = listRef.id
       let subListRef = firebaseDb.collection('sub_lists').doc()
@@ -63,7 +61,7 @@ export class NewListPage implements OnInit {
     batch.set(listRef, listParams)
 
     batch.commit().then(() => {
-      return this.$router.push({name: 'Lists'})
+      console.log('success');
     }).catch(function (error) {
       console.error('Error during batch commit: ', error)
     })
