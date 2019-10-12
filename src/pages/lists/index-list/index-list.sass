@@ -1,0 +1,44 @@
+.card-container
+  height: 12em
+  text-align: center
+  vertical-align: middle
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1)
+  border-radius: .3em
+  transition: width 1s
+  position: relative
+  border: 1px solid #ece9e9
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+  &:hover
+    cursor: pointer  
+
+.progress
+  height: 8px
+  width: 0px
+  background: #ffe080
+  position: absolute
+  border-radius: 8px
+  bottom: 0
+  left: 0
+  transition: width 1s
+
+.icon
+  font-weight: 100
+  font-size: 15px
+  color: #a2a2a2
+  padding: .2em
+
+.cards
+  @media screen and(min-width: 1336px)
+    grid-template-columns: repeat(3, 1fr)
+
+  @media screen and(max-width: 380px)
+    grid-template-columns: repeat(2, 1fr)
+    width: 94%
+
+  display: grid
+  width: 80%
+  margin: auto
+  column-gap: .7em
+  row-gap: .7em
