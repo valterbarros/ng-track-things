@@ -1,0 +1,24 @@
+.card-container {
+  height: 12em;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border-radius: .3em;
+  transition: width 1s;
+  position: relative;
+  border: 1px solid #ece9e9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  &:hover {
+    cursor: pointer;
+
+  }
+}
+
+.icon {
+  font-weight: 100;
+  font-size: 15px;
+  color: #a2a2a2;
+  padding: .2em;
+}

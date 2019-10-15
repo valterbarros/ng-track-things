@@ -4,7 +4,7 @@ import { ListsService } from '../../../providers/lists/lists.service'
 @Component({
   selector: 'app-index-list',
   templateUrl: './index-list.html',
-  styleUrls: ['./index-list.sass']
+  styleUrls: ['./index-list.scss']
 })
 export class IndexListPage implements OnInit {
   lists:Array<any> = [];
@@ -16,9 +16,6 @@ export class IndexListPage implements OnInit {
 
   ngOnInit () {
     this.lists = this.listsService.getLists();
-    setTimeout(() => {console.log(this.lists);}, 1000)
-    
-    
-    // this.subListsCount = this.listsService.getSubListsCount()
+    setTimeout(() => {console.log(this.lists);}, 1000);
   }
 }

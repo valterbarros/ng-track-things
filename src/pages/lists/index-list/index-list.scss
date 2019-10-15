@@ -1,0 +1,27 @@
+.progress {
+  height: 8px;
+  width: 0px;
+  background: #ffe080;
+  position: absolute;
+  border-radius: 8px;
+  bottom: 0;
+  left: 0;
+  transition: width 1s;
+}
+
+.cards{
+  @media screen and(min-width: 1336px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and(max-width: 380px) {
+    grid-template-columns: repeat(2, 1fr);
+    width: 94%;
+  }
+
+  display: grid;
+  width: 80%;
+  margin: auto;
+  column-gap: .7em;
+  row-gap: .7em;
+}

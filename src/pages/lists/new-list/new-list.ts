@@ -5,7 +5,7 @@ import { firebaseDb } from '../../../providers/firebase'
 @Component({
   selector: 'app-new-list',
   templateUrl: './new-list.html',
-  styleUrls: ['./new-list.sass']
+  styleUrls: ['./new-list.scss']
 })
 export class NewListPage implements OnInit {
   listForm: FormGroup;
