@@ -1,0 +1,56 @@
+<div class="list-wrapper">
+  <div class="list-container"
+    [ngClass]="{ smooth: isSmoothed }"
+    [attr.style]="sanitizer.bypassSecurityTrustStyle('--listsCount: 20')"
+    [ngStyle]="{
+      '--listsCount': listCount,
+      '--currentList': currentListNumber,
+      '--scrolledPageSize': scrolledPageSize,
+      '--factor': factor
+    }">
+    <div
+      class="list"
+      *ngFor="let subList of subLists"
+      (scroll)="handleScrollEventChange()"
+      (touchstart)="handleTouchStartList()"
+      (touchmove)="handleTouchMoveList()"
+      (touchcancel)="handleTouchCancelList()"
+      (touchend)="handleTouchEndList()"
+      [id]="subList.id">
+
+      <div class="list-title">{{ subList.title }}</div>
+
+      <!-- <card
+        @change-is-smoothed-list-value="handleChangeisSmoothedValue"
+        @change-current-list-value="handleChangeCurrentListValue"
+        @change-scrolled-page-size-value="handleChangeScrolledPageSizeValue"
+        @change-factor-value="handleChangeFactorValue"
+        :originalSublistParentId="subList.id"
+        :listCount="listCount"
+        :title="card.name"
+        :currentList="currentListNumber"
+        :placeHolderCardTemplate="placeHolderCardTemplate"
+        :currentClickedCardId="card.id"
+        v-for="card of subList.cards" :key="card.id"></card> -->
+
+      <!-- <div
+        :class="[subList.cards.length ? 'none' : 'block']"
+        class="default-placeholder-card">
+      </div> -->
+
+      <!-- <create-new-card-button
+        :subListId="subList.id"
+        @change-dialog-visible-value="handleChangeDialogVisibleValue"
+        @change-current-sub-list-id-value="handleChangeCurrentSubListIdValue"
+      ></create-new-card-button> -->
+    </div>
+  </div>
+
+  <!-- <create-new-card-modal :dialogVisible="dialogVisible"
+    :subListId="currentSubListId"
+    @change-dialog-visible-value="handleChangeDialogVisibleValue"
+    @put-new-card-to-sub-list="putNewCardToSubList"
+  ></create-new-card-modal>
+
+  <card-info-modal></card-info-modal> -->
+</div>

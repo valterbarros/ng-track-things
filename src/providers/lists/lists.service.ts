@@ -22,11 +22,11 @@ export class ListsService {
     return lists;
   }
 
-  getSubListsCount(docId: string): Promise<number> {
+  getSubListsCount(listId: string): Promise<number> {
     let subListsCount: number = 0;
 
     return new Promise(async function (resolve, reject) {
-      await firebaseDb.collection('sub_lists').where('list_id', '==', docId).get().then((querySnapshot) => {
+      await firebaseDb.collection('sub_lists').where('list_id', '==', listId).get().then((querySnapshot) => {
         querySnapshot.forEach(doc => {
           subListsCount += 1
         })
