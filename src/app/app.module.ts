@@ -9,6 +9,7 @@ import { IndexListPage } from '../pages/lists/index-list/index-list';
 import { CardComponent } from '../pages/lists/index-list/card/card.component'
 
 import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-list';
+import { FixForCssVarsDirective } from './fix-for-css-vars.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-li
     NewListPage,
     IndexListPage,
     IndexSubListPage,
-    CardComponent
+    CardComponent,
+    FixForCssVarsDirective
   ],
   imports: [
     ReactiveFormsModule,

@@ -1,21 +1,22 @@
 <div class="list-wrapper">
   <div class="list-container"
     [ngClass]="{ smooth: isSmoothed }"
-    [attr.style]="sanitizer.bypassSecurityTrustStyle('--listsCount: 20')"
-    [ngStyle]="{
+    [cssProps]="{
       '--listsCount': listCount,
       '--currentList': currentListNumber,
       '--scrolledPageSize': scrolledPageSize,
       '--factor': factor
-    }">
+    }"
+  >
     <div
+      #list
       class="list"
       *ngFor="let subList of subLists"
       (scroll)="handleScrollEventChange()"
-      (touchstart)="handleTouchStartList()"
-      (touchmove)="handleTouchMoveList()"
-      (touchcancel)="handleTouchCancelList()"
-      (touchend)="handleTouchEndList()"
+      (touchstart)="handleTouchStartList($event)"
+      (touchmove)="handleTouchMoveList($event)"
+      (touchcancel)="handleTouchCancelList($event)"
+      (touchend)="handleTouchEndList($event, list.offsetWidth)"
       [id]="subList.id">
 
       <div class="list-title">{{ subList.title }}</div>
@@ -33,10 +34,11 @@
         :currentClickedCardId="card.id"
         v-for="card of subList.cards" :key="card.id"></card> -->
 
-      <!-- <div
-        :class="[subList.cards.length ? 'none' : 'block']"
+      <div
+        [class.none]="subList.cards.length"
+        [class.block]="!subList.cards.length"
         class="default-placeholder-card">
-      </div> -->
+      </div>
 
       <!-- <create-new-card-button
         :subListId="subList.id"
