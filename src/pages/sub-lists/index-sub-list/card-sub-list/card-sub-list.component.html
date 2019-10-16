@@ -1,0 +1,37 @@
+<div
+  class="card draggable"
+  [ngClass]="stylesCard"
+  (touchstart)="handleTouchStartCard($event)"
+  (touchmove)="handleTouchMoveCard()"
+  (touchcancel)="handleTouchCancelCard()"
+  (touchend)="handleTouchEndCard()"
+>
+
+  <div class="card-header">
+    <div class="card-label">
+      <span class="label-text -warning">
+        Important
+      </span>
+    </div>
+
+    <!-- <card-info-button :currentClickedCardId="currentClickedCardId"></card-info-button> -->
+
+    <div class="card-title">{{ title }}</div>
+  </div>
+
+  <div class="card-extras">
+    <div class="badges">
+      <div class="tasks-count">
+        <span>1/5</span>
+      </div>
+
+      <div class="deadline">
+        <span>Feb 8</span>
+      </div>
+    </div>
+
+    <div class="responsibles">
+      <img src="https://trello-avatars.s3.amazonaws.com/ba2e18ccff9ae0c8e81847863898989a/30.png" alt="">
+    </div>
+  </div>
+</div>

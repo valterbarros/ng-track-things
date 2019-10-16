@@ -21,18 +21,14 @@
 
       <div class="list-title">{{ subList.title }}</div>
 
-      <!-- <card
-        @change-is-smoothed-list-value="handleChangeisSmoothedValue"
-        @change-current-list-value="handleChangeCurrentListValue"
-        @change-scrolled-page-size-value="handleChangeScrolledPageSizeValue"
-        @change-factor-value="handleChangeFactorValue"
+      <card-sub-list
         :originalSublistParentId="subList.id"
         :listCount="listCount"
         :title="card.name"
         :currentList="currentListNumber"
         :placeHolderCardTemplate="placeHolderCardTemplate"
         :currentClickedCardId="card.id"
-        v-for="card of subList.cards" :key="card.id"></card> -->
+        *ngFor="let card of subList.cards"></card-sub-list>
 
       <div
         [class.none]="subList.cards.length"

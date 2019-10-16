@@ -1,4 +1,4 @@
-import { Component, OnInit, Sanitizer } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
 
 @Component({
@@ -8,7 +8,11 @@ import { ListsService } from '../../../providers/lists/lists.service'
 })
 export class IndexSubListPage implements OnInit {
   isSmoothed: boolean = false;
-  subLists: Array<any> = [{ id: 1, title: 'hello', cards: [] }, { id: 2, title: 'hello2', cards: [] }, { id: 3, title: 'hello3', cards: [] }];
+  subLists: Array<any> = [
+    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'}] },
+    { id: 2, title: 'hello2', cards: [] },
+    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
+  ];
   listCount: number = 3;
   currentListNumber: number = 0;
   scrolledPageSize: string = '0px';
@@ -18,8 +22,7 @@ export class IndexSubListPage implements OnInit {
 
 
   constructor(
-    private listsService: ListsService,
-    private sanitizer: Sanitizer
+    private listsService: ListsService
   ) { }
 
   ngOnInit() {
@@ -27,12 +30,12 @@ export class IndexSubListPage implements OnInit {
 
   handleScrollEventChange() {/*Atualmente isso é feito no vuex ai preciso olhar com calma para reoslver essa treta e é usado dentro do card hehe*/ }
 
-  handleTouchStartList(ev) {
+  handleTouchStartList(ev: TouchEvent) {
     this.cursorPositionX = ev.targetTouches[0].clientX
     this.locked = true
   }
 
-  handleTouchMoveList(ev) {
+  handleTouchMoveList(ev: TouchEvent) {
     this.isSmoothed = !this.locked
 
     const diferenceBetweenScrollX = ev.changedTouches[0].clientX - this.cursorPositionX
@@ -42,7 +45,7 @@ export class IndexSubListPage implements OnInit {
     }
   }
 
-  handleTouchEndList(ev, listOffsetWidth: number) {
+  handleTouchEndList(ev: TouchEvent, listOffsetWidth: number) {
     console.log(listOffsetWidth);
 
     const diferenceBetweenScroll = ev.changedTouches[0].clientX - this.cursorPositionX
@@ -61,6 +64,6 @@ export class IndexSubListPage implements OnInit {
     this.cursorPositionX = null
   }
 
-  handleTouchCancelList(_ev) {
+  handleTouchCancelList(_ev: TouchEvent) {
   }
 }

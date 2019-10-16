@@ -1,0 +1,80 @@
+.card {
+  white-space: normal;
+  width: 96%;
+  text-align: left;
+  padding: 6px 8px 2px;
+  background: white;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 45, 66, 0.25);
+  @media screen and(min-width: 1336px) {
+    cursor: pointer;
+  }
+
+  @media screen and(max-width: 380px) {
+    cursor: default;
+  }
+  display: block;
+  min-height: 20px;
+  position: relative;
+  text-decoration: none;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  box-sizing: border-box;
+  &:first-child {
+    margin-top: 0.5em;
+  }
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  word-break: break-word;
+}
+
+.card-label {
+  margin-bottom: 8px;
+  flex: 1 50%;
+}
+
+.card-title {
+  margin-bottom: 6px;
+  flex: 1 100%;
+}
+
+.label-text {
+  background-color: #61bd4f;
+  height: 16px;
+  padding: 0 8px;
+  border-radius: 2px;
+  font-size: 13px;
+  &.-warning {
+    background-color: orange;
+  }
+}
+
+.card-extras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tasks-count {
+  text-align: center;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.deadline {
+  text-align: center;
+  display: inline-block;
+}
+
+.responsibles {
+}
+
+.responsibles img {
+  border-radius: 50%;
+}
