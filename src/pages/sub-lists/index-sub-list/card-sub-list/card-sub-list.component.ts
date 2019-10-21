@@ -11,7 +11,7 @@ export class CardSubListComponent implements OnInit {
     left: 0,
     top: 0,
     transform: 'rotate(0)',
-    opacity: 1,
+    opacity: '1',
     position: 'static',
     zIndex: 0
   }
@@ -19,6 +19,10 @@ export class CardSubListComponent implements OnInit {
   listMoved: boolean;
   touchMovedWithoutHoldCard: boolean;
   cursorPositionX: number;
+  cardMovedOldIndex: number;
+  holdTouchTimeId: any;
+  generalTimeout: number = 300;
+  touchStartTimeStamp: number;
 
   originalSublistParentId: string;
   listCount: number;
@@ -48,9 +52,13 @@ export class CardSubListComponent implements OnInit {
       navigator.vibrate(28)
     }, this.generalTimeout)
 
-    this.changeValueFromIsSmoothedOnParent(true)
+    // this.changeValueFromIsSmoothedOnParent(true)
 
     this.touchStartTimeStamp = ev.timeStamp
+  }
+
+  getCardIndexPosition (card) {
+    return [...card.parentElement.querySelectorAll('.card')].indexOf(card)
   }
 
 }

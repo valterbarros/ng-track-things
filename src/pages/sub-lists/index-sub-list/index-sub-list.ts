@@ -7,18 +7,20 @@ import { ListsService } from '../../../providers/lists/lists.service'
   styleUrls: ['./index-sub-list.scss']
 })
 export class IndexSubListPage implements OnInit {
-  isSmoothed: boolean = false;
   subLists: Array<any> = [
     { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'}] },
     { id: 2, title: 'hello2', cards: [] },
     { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
   ];
   listCount: number = 3;
+  cursorPositionX: number = 0;
+  locked: boolean = false;
+  
+  //NGRX
+  isSmoothed: boolean = false;
   currentListNumber: number = 0;
   scrolledPageSize: string = '0px';
   factor: number = 0;
-  cursorPositionX: number = 0;
-  locked: boolean = false;
 
 
   constructor(

@@ -12,6 +12,10 @@ import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-li
 import { CardSubListComponent } from '../pages/sub-lists/index-sub-list/card-sub-list/card-sub-list.component';
 
 import { FixForCssVarsDirective } from './fix-for-css-vars.directive';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,15 @@ import { FixForCssVarsDirective } from './fix-for-css-vars.directive';
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
