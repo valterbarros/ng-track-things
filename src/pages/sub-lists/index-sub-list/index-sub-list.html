@@ -1,6 +1,6 @@
 <div class="list-wrapper">
   <div class="list-container"
-    [ngClass]="{ smooth: isSmoothed }"
+    [ngClass]="{ smooth: isSmoothed$ | async }"
     [cssProps]="{
       '--listsCount': listCount,
       '--currentList': currentListNumber,

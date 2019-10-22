@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
+import { Store, select } from '@ngrx/store';
+import { State } from '../../../app/reducers/index';
+import { Observable } from 'rxjs';
+import * as DraggableComponentsActions from '../../../app/actions/draggable.actions';
 
 @Component({
   selector: 'app-index-sub-list',
@@ -7,6 +11,7 @@ import { ListsService } from '../../../providers/lists/lists.service'
   styleUrls: ['./index-sub-list.scss']
 })
 export class IndexSubListPage implements OnInit {
+  //Mover para store de NGRX pois é necessário na reordenação de cards
   subLists: Array<any> = [
     { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'}] },
     { id: 2, title: 'hello2', cards: [] },
@@ -17,15 +22,19 @@ export class IndexSubListPage implements OnInit {
   locked: boolean = false;
   
   //NGRX
-  isSmoothed: boolean = false;
+  isSmoothed$: Observable<boolean>;
+
   currentListNumber: number = 0;
   scrolledPageSize: string = '0px';
   factor: number = 0;
 
 
   constructor(
-    private listsService: ListsService
-  ) { }
+    private listsService: ListsService,
+    private store: Store<State>
+  ) {
+    this.isSmoothed$ = store.pipe(select(state => state.draggable.isSmoothed));
+  }
 
   ngOnInit() {
   }
@@ -38,7 +47,7 @@ export class IndexSubListPage implements OnInit {
   }
 
   handleTouchMoveList(ev: TouchEvent) {
-    this.isSmoothed = !this.locked
+    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}))
 
     const diferenceBetweenScrollX = ev.changedTouches[0].clientX - this.cursorPositionX
 
@@ -48,8 +57,6 @@ export class IndexSubListPage implements OnInit {
   }
 
   handleTouchEndList(ev: TouchEvent, listOffsetWidth: number) {
-    console.log(listOffsetWidth);
-
     const diferenceBetweenScroll = ev.changedTouches[0].clientX - this.cursorPositionX
     const sign = Math.sign(diferenceBetweenScroll)
     const factor = +(sign * diferenceBetweenScroll / listOffsetWidth).toFixed(2)
@@ -62,7 +69,9 @@ export class IndexSubListPage implements OnInit {
     this.factor = factor
 
     this.locked = false
-    this.isSmoothed = !this.locked
+
+    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}))
+
     this.cursorPositionX = null
   }
 
