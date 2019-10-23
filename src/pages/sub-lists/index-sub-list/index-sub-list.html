@@ -3,7 +3,7 @@
     [ngClass]="{ smooth: isSmoothed$ | async }"
     [cssProps]="{
       '--listsCount': listCount,
-      '--currentList': currentListNumber,
+      '--currentList': currentListNumber$ | async,
       '--scrolledPageSize': scrolledPageSize,
       '--factor': factor
     }"

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListsService } from '../../../../providers/lists/lists.service'
+import { ListsService } from '../../../../providers/lists/lists.service';
 
 @Component({
   selector: 'card-sub-list',

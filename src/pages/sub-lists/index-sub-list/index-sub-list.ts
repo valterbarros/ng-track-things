@@ -23,17 +23,17 @@ export class IndexSubListPage implements OnInit {
   
   //NGRX
   isSmoothed$: Observable<boolean>;
+  currentListNumber$: Observable<number>;
 
-  currentListNumber: number = 0;
   scrolledPageSize: string = '0px';
   factor: number = 0;
-
 
   constructor(
     private listsService: ListsService,
     private store: Store<State>
   ) {
     this.isSmoothed$ = store.pipe(select(state => state.draggable.isSmoothed));
+    this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
   }
 
   ngOnInit() {
@@ -56,13 +56,16 @@ export class IndexSubListPage implements OnInit {
     }
   }
 
-  handleTouchEndList(ev: TouchEvent, listOffsetWidth: number) {
+  async handleTouchEndList(ev: TouchEvent, listOffsetWidth: number) {
     const diferenceBetweenScroll = ev.changedTouches[0].clientX - this.cursorPositionX
     const sign = Math.sign(diferenceBetweenScroll)
     const factor = +(sign * diferenceBetweenScroll / listOffsetWidth).toFixed(2)
 
-    if ((this.currentListNumber > 0 || sign < 0) && (this.currentListNumber < this.listCount - 1 || sign > 0) && factor > 0.2) {
-      this.currentListNumber = this.currentListNumber -= sign
+    let currentListNumber: number;
+    this.currentListNumber$.subscribe(value => { currentListNumber = value })
+
+    if ((currentListNumber > 0 || sign < 0) && (currentListNumber < this.listCount - 1 || sign > 0) && factor > 0.2) {
+      this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}))
     }
 
     this.scrolledPageSize = '0px'

@@ -23,7 +23,7 @@ export const initialState: State = {
 const draggableReducer = createReducer(
   initialState,
   on(DraggableComponentsActions.isSmoothed, (state: State, props) => ({ ...state, isSmoothed: props.isSmoothed })),
-  on(DraggableComponentsActions.currentListNumber, (state: State) => ({ ...state, currentListNumber: state.currentListNumber })),
+  on(DraggableComponentsActions.currentListNumber, (state: State, props) => ({ ...state, currentListNumber: props.currentListNumber })),
   on(DraggableComponentsActions.scrolledPageSize, (state: State) => ({ ...state, scrolledPageSize: state.scrolledPageSize })),
   on(DraggableComponentsActions.factor, (state: State) => ({ ...state, factor: state.factor }))
 );
