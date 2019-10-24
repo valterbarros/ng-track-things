@@ -5,14 +5,14 @@
       '--listsCount': listCount,
       '--currentList': currentListNumber$ | async,
       '--scrolledPageSize': scrolledPageSize,
-      '--factor': factor
+      '--factor': factor$ | async
     }"
   >
     <div
       #list
       class="list"
       *ngFor="let subList of subLists"
-      (scroll)="handleScrollEventChange()"
+      (scroll)="handleScrollEventChange(list.scrollTop)"
       (touchstart)="handleTouchStartList($event)"
       (touchmove)="handleTouchMoveList($event)"
       (touchcancel)="handleTouchCancelList($event)"

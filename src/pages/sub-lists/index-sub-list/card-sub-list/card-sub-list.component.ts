@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ListsService } from '../../../../providers/lists/lists.service';
 
 @Component({
@@ -24,11 +24,11 @@ export class CardSubListComponent implements OnInit {
   generalTimeout: number = 300;
   touchStartTimeStamp: number;
 
-  originalSublistParentId: string;
-  listCount: number;
-  title: string;
-  currentList: number;
   placeHolderCardTemplate: HTMLDivElement;
+  currentList: number;
+  title: string;
+  listCount: number;
+  originalSublistParentId: string;
   currentClickedCardId: string;
 
   constructor(

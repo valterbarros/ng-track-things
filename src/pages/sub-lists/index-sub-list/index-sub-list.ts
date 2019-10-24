@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
@@ -13,20 +13,19 @@ import * as DraggableComponentsActions from '../../../app/actions/draggable.acti
 export class IndexSubListPage implements OnInit {
   //Mover para store de NGRX pois é necessário na reordenação de cards
   subLists: Array<any> = [
-    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'}] },
+    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
     { id: 2, title: 'hello2', cards: [] },
     { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
   ];
   listCount: number = 3;
   cursorPositionX: number = 0;
   locked: boolean = false;
+  scrolledPageSize: string = '0px';
   
   //NGRX
   isSmoothed$: Observable<boolean>;
   currentListNumber$: Observable<number>;
-
-  scrolledPageSize: string = '0px';
-  factor: number = 0;
+  factor$: Observable<number>;
 
   constructor(
     private listsService: ListsService,
@@ -34,12 +33,11 @@ export class IndexSubListPage implements OnInit {
   ) {
     this.isSmoothed$ = store.pipe(select(state => state.draggable.isSmoothed));
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
+    this.factor$ = store.pipe(select(state => state.draggable.factor));
   }
 
   ngOnInit() {
   }
-
-  handleScrollEventChange() {/*Atualmente isso é feito no vuex ai preciso olhar com calma para reoslver essa treta e é usado dentro do card hehe*/ }
 
   handleTouchStartList(ev: TouchEvent) {
     this.cursorPositionX = ev.targetTouches[0].clientX
@@ -69,7 +67,7 @@ export class IndexSubListPage implements OnInit {
     }
 
     this.scrolledPageSize = '0px'
-    this.factor = factor
+    this.store.dispatch(DraggableComponentsActions.factor({factor: factor}))
 
     this.locked = false
 
@@ -79,5 +77,10 @@ export class IndexSubListPage implements OnInit {
   }
 
   handleTouchCancelList(_ev: TouchEvent) {
+  }
+  
+  @HostListener('scroll', ['$event']) 
+  handleScrollEventChange (scrollTop: number) {
+    this.store.dispatch(DraggableComponentsActions.scrollTopSizeList({scrollTopSizeList: scrollTop}))
   }
 }

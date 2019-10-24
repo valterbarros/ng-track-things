@@ -9,14 +9,14 @@ import * as DraggableComponentsActions from '../actions/draggable.actions';
 export interface State {
   isSmoothed: boolean,
   currentListNumber: number,
-  scrolledPageSize: string,
+  scrollTopSizeList: number,
   factor: number
 };
 
 export const initialState: State = {
   isSmoothed: false,
   currentListNumber: 0,
-  scrolledPageSize: '0px',
+  scrollTopSizeList: 0,
   factor: 0
 };
 
@@ -24,8 +24,8 @@ const draggableReducer = createReducer(
   initialState,
   on(DraggableComponentsActions.isSmoothed, (state: State, props) => ({ ...state, isSmoothed: props.isSmoothed })),
   on(DraggableComponentsActions.currentListNumber, (state: State, props) => ({ ...state, currentListNumber: props.currentListNumber })),
-  on(DraggableComponentsActions.scrolledPageSize, (state: State) => ({ ...state, scrolledPageSize: state.scrolledPageSize })),
-  on(DraggableComponentsActions.factor, (state: State) => ({ ...state, factor: state.factor }))
+  on(DraggableComponentsActions.scrollTopSizeList, (state: State, props) => ({ ...state, scrollTopSizeList: props.scrollTopSizeList })),
+  on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
