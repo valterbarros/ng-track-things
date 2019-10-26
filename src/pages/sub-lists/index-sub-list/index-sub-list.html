@@ -1,10 +1,10 @@
-<div class="list-wrapper">
+<div class="list-wrapper" #text>
   <div class="list-container"
     [ngClass]="{ smooth: isSmoothed$ | async }"
     [cssProps]="{
       '--listsCount': listCount,
       '--currentList': currentListNumber$ | async,
-      '--scrolledPageSize': scrolledPageSize,
+      '--scrolledPageSize': scrolledPageSize$ | async,
       '--factor': factor$ | async
     }"
   >
@@ -22,12 +22,12 @@
       <div class="list-title">{{ subList.title }}</div>
 
       <card-sub-list
-        :originalSublistParentId="subList.id"
-        :listCount="listCount"
-        :title="card.name"
-        :currentList="currentListNumber"
-        :placeHolderCardTemplate="placeHolderCardTemplate"
-        :currentClickedCardId="card.id"
+        #cards
+        [originalSublistParentId]="subList.id"
+        [listCount]="listCount"
+        [title]="card.name"
+        [placeHolderCardTemplate]="placeHolderCardTemplate"
+        [currentClickedCardId]="card.id"
         *ngFor="let card of subList.cards"></card-sub-list>
 
       <div

@@ -10,6 +10,7 @@ export interface State {
   isSmoothed: boolean,
   currentListNumber: number,
   scrollTopSizeList: number,
+  scrolledPageSize: string,
   factor: number
 };
 
@@ -17,6 +18,7 @@ export const initialState: State = {
   isSmoothed: false,
   currentListNumber: 0,
   scrollTopSizeList: 0,
+  scrolledPageSize: '0px',
   factor: 0
 };
 
@@ -25,6 +27,7 @@ const draggableReducer = createReducer(
   on(DraggableComponentsActions.isSmoothed, (state: State, props) => ({ ...state, isSmoothed: props.isSmoothed })),
   on(DraggableComponentsActions.currentListNumber, (state: State, props) => ({ ...state, currentListNumber: props.currentListNumber })),
   on(DraggableComponentsActions.scrollTopSizeList, (state: State, props) => ({ ...state, scrollTopSizeList: props.scrollTopSizeList })),
+  on(DraggableComponentsActions.scrolledPageSize, (state: State, props) => ({ ...state, scrolledPageSize: props.scrolledPageSize })),
   on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor }))
 );
 

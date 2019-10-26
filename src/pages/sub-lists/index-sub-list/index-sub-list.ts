@@ -11,21 +11,22 @@ import * as DraggableComponentsActions from '../../../app/actions/draggable.acti
   styleUrls: ['./index-sub-list.scss']
 })
 export class IndexSubListPage implements OnInit {
-  //Mover para store de NGRX pois é necessário na reordenação de cards
-  subLists: Array<any> = [
-    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
-    { id: 2, title: 'hello2', cards: [] },
-    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
-  ];
   listCount: number = 3;
   cursorPositionX: number = 0;
   locked: boolean = false;
-  scrolledPageSize: string = '0px';
+  placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
   
   //NGRX
   isSmoothed$: Observable<boolean>;
   currentListNumber$: Observable<number>;
   factor$: Observable<number>;
+  scrolledPageSize$: Observable<string>;
+  
+  subLists: Array<any> = [
+    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
+    { id: 2, title: 'hello2', cards: [] },
+    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
+  ];
 
   constructor(
     private listsService: ListsService,
@@ -34,6 +35,7 @@ export class IndexSubListPage implements OnInit {
     this.isSmoothed$ = store.pipe(select(state => state.draggable.isSmoothed));
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
     this.factor$ = store.pipe(select(state => state.draggable.factor));
+    this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
   }
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class IndexSubListPage implements OnInit {
     const diferenceBetweenScrollX = ev.changedTouches[0].clientX - this.cursorPositionX
 
     if (Math.abs(diferenceBetweenScrollX) > 50 && this.locked) {
-      this.scrolledPageSize = `${Math.round(diferenceBetweenScrollX)}px`
+      this.store.dispatch(DraggableComponentsActions.scrolledPageSize({scrolledPageSize: `${Math.round(diferenceBetweenScrollX)}px`}));
     }
   }
 
@@ -66,8 +68,8 @@ export class IndexSubListPage implements OnInit {
       this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}))
     }
 
-    this.scrolledPageSize = '0px'
-    this.store.dispatch(DraggableComponentsActions.factor({factor: factor}))
+    this.store.dispatch(DraggableComponentsActions.factor({factor: factor}));
+    this.store.dispatch(DraggableComponentsActions.scrolledPageSize({scrolledPageSize: '0px'}));
 
     this.locked = false
 
@@ -82,5 +84,13 @@ export class IndexSubListPage implements OnInit {
   @HostListener('scroll', ['$event']) 
   handleScrollEventChange (scrollTop: number) {
     this.store.dispatch(DraggableComponentsActions.scrollTopSizeList({scrollTopSizeList: scrollTop}))
+  }
+
+  generatePlaceHolderCard () : HTMLDivElement {
+    const placeHolderCard = document.createElement('div')
+
+    placeHolderCard.classList.add('placeholder-card')
+
+    return placeHolderCard
   }
 }

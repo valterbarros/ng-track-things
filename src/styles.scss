@@ -50,3 +50,17 @@ a {
   text-decoration: none;
   color: white;
 }
+
+.placeholder-card {
+  background: #d2d2d2;
+  height: 110px;
+  position: relative;
+  content: '';
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  box-sizing: border-box;
+  &:first-child {
+    margin-top: 0.5em;
+  }
+}

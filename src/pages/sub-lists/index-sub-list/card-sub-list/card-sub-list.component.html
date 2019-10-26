@@ -2,9 +2,7 @@
   class="card draggable"
   [ngStyle]="stylesCard"
   (touchstart)="handleTouchStartCard($event)"
-  (touchmove)="handleTouchMoveCard()"
-  (touchcancel)="handleTouchCancelCard()"
-  (touchend)="handleTouchEndCard()"
+  (touchmove)="handleTouchMoveCard($event)"
 >
 
   <div class="card-header">
