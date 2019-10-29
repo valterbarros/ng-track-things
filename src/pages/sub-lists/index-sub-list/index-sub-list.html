@@ -11,7 +11,7 @@
     <div
       #list
       class="list"
-      *ngFor="let subList of subLists"
+      *ngFor="let subList of subLists$ | async"
       (scroll)="handleScrollEventChange(list.scrollTop)"
       (touchstart)="handleTouchStartList($event)"
       (touchmove)="handleTouchMoveList($event)"

@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
+import { SubList } from '../../../app/reducers/draggable.reducer'
 import { Observable } from 'rxjs';
 import * as DraggableComponentsActions from '../../../app/actions/draggable.actions';
 
@@ -21,12 +22,8 @@ export class IndexSubListPage implements OnInit {
   currentListNumber$: Observable<number>;
   factor$: Observable<number>;
   scrolledPageSize$: Observable<string>;
-  
-  subLists: Array<any> = [
-    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
-    { id: 2, title: 'hello2', cards: [] },
-    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
-  ];
+
+  subLists$: Observable<SubList[]>;
 
   constructor(
     private listsService: ListsService,
@@ -36,10 +33,10 @@ export class IndexSubListPage implements OnInit {
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
     this.factor$ = store.pipe(select(state => state.draggable.factor));
     this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
+    this.subLists$ = store.pipe(select(state => state.draggable.subLists));
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   handleTouchStartList(ev: TouchEvent) {
     this.cursorPositionX = ev.targetTouches[0].clientX

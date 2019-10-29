@@ -10,6 +10,5 @@ export const reducers: ActionReducerMap<State> = {
   draggable: draggableReducer.reducer
 };
 
-
 // As a middleware
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

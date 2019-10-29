@@ -6,13 +6,22 @@ import { Observable } from 'rxjs';
 import { getDistanceBetweenElements } from '../../../../utils/calculations';
 import * as DraggableComponentsActions from '../../../../app/actions/draggable.actions';
 
+interface StyleCard {
+  left: string,
+  top: string,
+  transform: string,
+  opacity: string,
+  position: string,
+  zIndex: string
+}
+
 @Component({
   selector: 'card-sub-list',
   templateUrl: './card-sub-list.component.html',
   styleUrls: ['./card-sub-list.component.scss']
 })
 export class CardSubListComponent implements OnInit {
-  stylesCard = {
+  stylesCard: StyleCard = {
     left: '',
     top: '',
     transform: 'rotate(0)',
@@ -78,15 +87,6 @@ export class CardSubListComponent implements OnInit {
     this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: true}));
 
     this.touchStartTimeStamp = ev.timeStamp
-  }
-
-  getCardIndexPosition (card) {
-    return [...card.parentElement.querySelectorAll('.card')].indexOf(card)
-  }
-
-  handleTouchCancelCard (ev) {
-    this.stylesCard.transform = 'rotate(0)'
-    this.stylesCard.opacity = '1'
   }
 
   handleTouchMoveCard (ev) {
@@ -178,7 +178,54 @@ export class CardSubListComponent implements OnInit {
     return (card.offsetWidth / 2) * 0.4
   }
 
-  getTopParentSize () {
+  getTopParentSize (): number {
     return document.querySelector('.list-wrapper').getBoundingClientRect().top
+  }
+
+  handleTouchEndCard (card: HTMLDivElement, ev: TouchEvent) {
+    const touchEndTimeStamp = ev.timeStamp
+    let currentPlaceHolder = card.parentElement.parentElement.querySelector('.placeholder-card')
+
+    if (this.touchMovedWithoutHoldCard || (touchEndTimeStamp - this.touchStartTimeStamp) < this.generalTimeout) {
+      clearTimeout(this.holdTouchTimeId)
+
+      return
+    }
+    ev.stopPropagation()
+
+    if (currentPlaceHolder) {
+      currentPlaceHolder.replaceWith(card)
+    }
+
+    // Save card order
+    // this.cardMovedNewIndex = this.getCardIndexPosition(card)
+
+    // const subListParentIdAfterMoveCard = card.parentElement.parentElement.id
+
+    // this.saveCardsOrder(
+    //   {
+    //     list: {
+    //       from_id: this.originalSublistParentId,
+    //       to_id: subListParentIdAfterMoveCard
+    //     },
+    //     oldIndex: this.cardMovedOldIndex,
+    //     newIndex: this.cardMovedNewIndex
+    //   }
+    // )
+
+    this.stylesCard.position = 'static'
+    this.stylesCard.transform = 'rotate(0)'
+    this.stylesCard.opacity = '1'
+
+    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: false}));
+  }
+
+  getCardIndexPosition (card) {
+    return [...card.parentElement.querySelectorAll('.card')].indexOf(card)
+  }
+
+  handleTouchCancelCard () {
+    this.stylesCard.transform = 'rotate(0)'
+    this.stylesCard.opacity = '1'
   }
 }

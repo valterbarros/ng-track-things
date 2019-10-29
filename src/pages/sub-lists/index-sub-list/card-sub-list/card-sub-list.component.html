@@ -3,6 +3,8 @@
   [ngStyle]="stylesCard"
   (touchstart)="handleTouchStartCard($event)"
   (touchmove)="handleTouchMoveCard($event)"
+  (touchend)="handleTouchEndCard($event.currentTarget, $event)"
+  (touchcancel)="handleTouchCancelCard()"
 >
 
   <div class="card-header">

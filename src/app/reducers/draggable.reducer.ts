@@ -6,12 +6,24 @@ import {
 
 import * as DraggableComponentsActions from '../actions/draggable.actions';
 
+interface Card {
+  id: number,
+  name: string
+}
+
+export interface SubList {
+  id: number,
+  title: string,
+  cards: Card[]
+}
+
 export interface State {
   isSmoothed: boolean,
   currentListNumber: number,
   scrollTopSizeList: number,
   scrolledPageSize: string,
-  factor: number
+  factor: number,
+  subLists: SubList[]
 };
 
 export const initialState: State = {
@@ -19,7 +31,12 @@ export const initialState: State = {
   currentListNumber: 0,
   scrollTopSizeList: 0,
   scrolledPageSize: '0px',
-  factor: 0
+  factor: 0,
+  subLists: [
+    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
+    { id: 2, title: 'hello2', cards: [] },
+    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
+  ]
 };
 
 const draggableReducer = createReducer(
