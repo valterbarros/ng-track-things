@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
-import { SubList } from '../../../app/reducers/draggable.reducer'
+import { SubList } from '../../../app/models/sub-lists-model';
 import { Observable } from 'rxjs';
 import * as DraggableComponentsActions from '../../../app/actions/draggable.actions';
 
@@ -22,7 +22,6 @@ export class IndexSubListPage implements OnInit {
   currentListNumber$: Observable<number>;
   factor$: Observable<number>;
   scrolledPageSize$: Observable<string>;
-
   subLists$: Observable<SubList[]>;
 
   constructor(
@@ -34,6 +33,7 @@ export class IndexSubListPage implements OnInit {
     this.factor$ = store.pipe(select(state => state.draggable.factor));
     this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
     this.subLists$ = store.pipe(select(state => state.draggable.subLists));
+    store.dispatch(DraggableComponentsActions.requestSublist({listId: 'H0c1bCOktVlJrSAl6jaq'}));
   }
 
   ngOnInit() {}

@@ -5,17 +5,7 @@ import {
 } from '@ngrx/store';
 
 import * as DraggableComponentsActions from '../actions/draggable.actions';
-
-interface Card {
-  id: number,
-  name: string
-}
-
-export interface SubList {
-  id: number,
-  title: string,
-  cards: Card[]
-}
+import { SubList } from '../models/sub-lists-model'; 
 
 export interface State {
   isSmoothed: boolean,
@@ -32,11 +22,7 @@ export const initialState: State = {
   scrollTopSizeList: 0,
   scrolledPageSize: '0px',
   factor: 0,
-  subLists: [
-    { id: 1, title: 'hello', cards: [{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'},{id: 1, name: 'hello1'}] },
-    { id: 2, title: 'hello2', cards: [] },
-    { id: 3, title: 'hello3', cards: [{id: 2, name: 'hello'}] }
-  ]
+  subLists: []
 };
 
 const draggableReducer = createReducer(
@@ -45,7 +31,10 @@ const draggableReducer = createReducer(
   on(DraggableComponentsActions.currentListNumber, (state: State, props) => ({ ...state, currentListNumber: props.currentListNumber })),
   on(DraggableComponentsActions.scrollTopSizeList, (state: State, props) => ({ ...state, scrollTopSizeList: props.scrollTopSizeList })),
   on(DraggableComponentsActions.scrolledPageSize, (state: State, props) => ({ ...state, scrolledPageSize: props.scrolledPageSize })),
-  on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor }))
+  on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor })),
+  on(DraggableComponentsActions.subList, (state: State, props) => ({ ...state, subLists: [...state.subLists, props.subLists] })),
+  
+  on(DraggableComponentsActions.effect, (state: State, props) => ({ ...state, factor: props.factor }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

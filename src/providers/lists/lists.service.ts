@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { firebaseDb } from '../firebase';
+import { Observable, from, of } from 'rxjs';
+import { concatMap, mergeMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,4 +42,29 @@ export class ListsService {
   }
 
   createListAndSublist() { }
+
+  getSublists (docId: string) : Observable<any> {
+    const subLists: Array<any> = [];
+
+    return new Observable(observer => {
+      firebaseDb.collection('sub_lists').where('list_id', '==', docId).get().then((querySnapshot) => {
+        querySnapshot.forEach(doc => {
+          const subListDocId = doc.id
+          let cards: Array<any> = []
+
+          firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get().then((querySnapshot) => {
+            querySnapshot.forEach(doc => {
+              const cardId: string = doc.id
+
+              cards.push({...doc.data(), id: cardId})
+            } )
+          })
+
+          console.log(doc.data());
+
+          observer.next({...doc.data(), cards: cards, id: subListDocId })
+        })
+      })
+    })
+  }
 }
