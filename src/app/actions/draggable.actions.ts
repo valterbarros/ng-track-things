@@ -7,6 +7,5 @@ export const scrollTopSizeList = createAction('[Draggable Components] scrollTopS
 export const scrolledPageSize = createAction('[Draggable Components] scrolledPageSize', props<{ scrolledPageSize:  string; }>());
 export const factor = createAction('[Draggable Components] factor', props<{ factor:  number; }>());
 export const requestSublist = createAction('[Draggable Components] requestSublist', props<{ listId:  string; }>());
-export const subList = createAction('[Draggable Components] subList', props<{ subLists:  SubList[]; }>());
-
-export const effect = createAction('[Draggable Components] effect', props<{ factor:  number; }>());
+export const subList = createAction('[Draggable Components] subList', props<{ subList:  SubList; }>());
+export const listCount = createAction('[Draggable Components] listCount');

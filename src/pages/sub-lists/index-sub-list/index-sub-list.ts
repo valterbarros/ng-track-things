@@ -12,12 +12,12 @@ import * as DraggableComponentsActions from '../../../app/actions/draggable.acti
   styleUrls: ['./index-sub-list.scss']
 })
 export class IndexSubListPage implements OnInit {
-  listCount: number = 3;
   cursorPositionX: number = 0;
   locked: boolean = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
   
   //NGRX
+  listCount$: Observable<number>;
   isSmoothed$: Observable<boolean>;
   currentListNumber$: Observable<number>;
   factor$: Observable<number>;
@@ -33,6 +33,8 @@ export class IndexSubListPage implements OnInit {
     this.factor$ = store.pipe(select(state => state.draggable.factor));
     this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
     this.subLists$ = store.pipe(select(state => state.draggable.subLists));
+    this.listCount$ = store.pipe(select(state => state.draggable.listCount));
+
     store.dispatch(DraggableComponentsActions.requestSublist({listId: 'H0c1bCOktVlJrSAl6jaq'}));
   }
 
@@ -60,7 +62,7 @@ export class IndexSubListPage implements OnInit {
 
     let currentListNumber: number;
     this.currentListNumber$.subscribe(value => { currentListNumber = value })
-
+    
     if ((currentListNumber > 0 || sign < 0) && (currentListNumber < this.listCount - 1 || sign > 0) && factor > 0.2) {
       this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}))
     }

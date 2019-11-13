@@ -60,8 +60,6 @@ export class ListsService {
             } )
           })
 
-          console.log(doc.data());
-
           observer.next({...doc.data(), cards: cards, id: subListDocId })
         })
       })

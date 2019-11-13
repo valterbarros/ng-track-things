@@ -13,7 +13,8 @@ export interface State {
   scrollTopSizeList: number,
   scrolledPageSize: string,
   factor: number,
-  subLists: SubList[]
+  subLists: SubList[],
+  listCount: number
 };
 
 export const initialState: State = {
@@ -22,7 +23,8 @@ export const initialState: State = {
   scrollTopSizeList: 0,
   scrolledPageSize: '0px',
   factor: 0,
-  subLists: []
+  subLists: [],
+  listCount: 0
 };
 
 const draggableReducer = createReducer(
@@ -32,9 +34,8 @@ const draggableReducer = createReducer(
   on(DraggableComponentsActions.scrollTopSizeList, (state: State, props) => ({ ...state, scrollTopSizeList: props.scrollTopSizeList })),
   on(DraggableComponentsActions.scrolledPageSize, (state: State, props) => ({ ...state, scrolledPageSize: props.scrolledPageSize })),
   on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor })),
-  on(DraggableComponentsActions.subList, (state: State, props) => ({ ...state, subLists: [...state.subLists, props.subLists] })),
-  
-  on(DraggableComponentsActions.effect, (state: State, props) => ({ ...state, factor: props.factor }))
+  on(DraggableComponentsActions.subList, (state: State, props) => ({ ...state, subLists: [...state.subLists, props.subList] })),
+  on(DraggableComponentsActions.listCount, (state: State) => ({ ...state, listCount: state.listCount + 1 })),
 );
 
 export function reducer(state: State | undefined, action: Action) {

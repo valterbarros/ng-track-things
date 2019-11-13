@@ -2,7 +2,7 @@
   <div class="list-container"
     [ngClass]="{ smooth: isSmoothed$ | async }"
     [cssProps]="{
-      '--listsCount': listCount,
+      '--listsCount': listCount$ | async,
       '--currentList': currentListNumber$ | async,
       '--scrolledPageSize': scrolledPageSize$ | async,
       '--factor': factor$ | async
