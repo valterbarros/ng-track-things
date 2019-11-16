@@ -5,6 +5,7 @@ import { State } from '../../../app/reducers/index';
 import { SubList } from '../../../app/models/sub-lists-model';
 import { Observable } from 'rxjs';
 import * as DraggableComponentsActions from '../../../app/actions/draggable.actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-index-sub-list',
@@ -26,7 +27,8 @@ export class IndexSubListPage implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private store: Store<State>
+    private store: Store<State>,
+    private route: ActivatedRoute
   ) {
     this.isSmoothed$ = store.pipe(select(state => state.draggable.isSmoothed));
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
@@ -34,8 +36,9 @@ export class IndexSubListPage implements OnInit {
     this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
     this.subLists$ = store.pipe(select(state => state.draggable.subLists));
     this.listCount$ = store.pipe(select(state => state.draggable.listCount));
-
-    store.dispatch(DraggableComponentsActions.requestSublist({listId: 'H0c1bCOktVlJrSAl6jaq'}));
+    
+    const listId = this.route.snapshot.paramMap.get('listId')
+    store.dispatch(DraggableComponentsActions.requestSublist({listId: listId}));
   }
 
   ngOnInit() {}

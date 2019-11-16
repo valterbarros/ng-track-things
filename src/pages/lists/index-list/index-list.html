@@ -1,7 +1,7 @@
-
 <div id="container">
   <div class="cards">
     <card
+      [routerLink]="['/sub-lists/', list.docId]"
       *ngFor="let list of lists"
       [listId]="list.docId"
       [title]="list.title"

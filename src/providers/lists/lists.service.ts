@@ -44,21 +44,18 @@ export class ListsService {
   createListAndSublist() { }
 
   getSublists (docId: string) : Observable<any> {
-    const subLists: Array<any> = [];
-
     return new Observable(observer => {
       firebaseDb.collection('sub_lists').where('list_id', '==', docId).get().then((querySnapshot) => {
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach(async doc => {
           const subListDocId = doc.id
           let cards: Array<any> = []
-          cards.push({title: 'hello', id: 1})
 
-          firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get().then((querySnapshot) => {
-            querySnapshot.forEach(doc => {
-              const cardId: string = doc.id
+          const querySnapshot = await firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get()
 
-              cards.push({...doc.data(), id: cardId})
-            } )
+          querySnapshot.forEach(doc => {
+            const cardId: string = doc.id
+
+            cards = [...cards, {...doc.data(), id: cardId}]
           })
 
           observer.next({...doc.data(), cards: cards, id: subListDocId })
@@ -66,4 +63,7 @@ export class ListsService {
       })
     })
   }
+
+  reorderCards () {}
+  saveCardsOrder () {}
 }

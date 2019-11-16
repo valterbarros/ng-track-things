@@ -13,7 +13,7 @@ export class AppEffects {
   loadSublists$ = createEffect(() => this.actions$.pipe(
       ofType(DraggableComponentsActions.requestSublist),
       mergeMap((action) => this.listService.getSublists(action.listId).pipe(
-          map(v => { console.log('outra', v); return DraggableComponentsActions.subList({subList: v}) } ),
+          map(v => { return DraggableComponentsActions.subList({subList: v}) } ),
           catchError(() => EMPTY)
         )
       ),
@@ -25,6 +25,5 @@ export class AppEffects {
     private actions$: Actions,
     private listService: ListsService,
     private store: Store<State>
-  ) {
-  }
+  ) {}
 }
