@@ -63,7 +63,10 @@ export class IndexSubListPage implements OnInit {
     let currentListNumber: number;
     this.currentListNumber$.subscribe(value => { currentListNumber = value })
     
-    if ((currentListNumber > 0 || sign < 0) && (currentListNumber < this.listCount - 1 || sign > 0) && factor > 0.2) {
+    let listCount: number;
+    this.listCount$.subscribe(value => { listCount = value })
+    
+    if ((currentListNumber > 0 || sign < 0) && (currentListNumber < listCount - 1 || sign > 0) && factor > 0.2) {
       this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}))
     }
 

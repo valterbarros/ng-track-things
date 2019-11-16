@@ -46,9 +46,6 @@ export class CardSubListComponent implements OnInit {
   title: string;
   
   @Input()
-  listCount: number;
-  
-  @Input()
   originalSublistParentId: string;
   
   @Input()
@@ -56,6 +53,7 @@ export class CardSubListComponent implements OnInit {
 
   scrollTopSizeList$: Observable<number>;
   currentListNumber$: Observable<number>;
+  listCount$: Observable<number>;
 
   constructor(
     private listsService: ListsService,
@@ -63,7 +61,7 @@ export class CardSubListComponent implements OnInit {
   ) {
     this.scrollTopSizeList$ = store.pipe(select(state => state.draggable.scrollTopSizeList));
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
-    
+    this.listCount$ = store.pipe(select(state => state.draggable.listCount));
   }
   
   ngOnInit() {
@@ -138,11 +136,14 @@ export class CardSubListComponent implements OnInit {
 
       let currentList: number;
       this.currentListNumber$.subscribe(value => {currentList = value})
+
+      let listCount: number;
+      this.listCount$.subscribe(value => {listCount = value})
       
       const newCurrentListValue = currentList += sign
 
       if (Math.abs(card.offsetLeft) > this.fortyPercentyOfCardSize(card)) {
-        if ((newCurrentListValue >= 0) && (newCurrentListValue <= this.listCount - 1)) {
+        if ((newCurrentListValue >= 0) && (newCurrentListValue <= listCount - 1)) {
           this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: newCurrentListValue}));
 
           this.store.dispatch(DraggableComponentsActions.factor({factor: 0.4}));

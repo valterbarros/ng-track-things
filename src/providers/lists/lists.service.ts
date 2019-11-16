@@ -51,6 +51,7 @@ export class ListsService {
         querySnapshot.forEach(doc => {
           const subListDocId = doc.id
           let cards: Array<any> = []
+          cards.push({title: 'hello', id: 1})
 
           firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get().then((querySnapshot) => {
             querySnapshot.forEach(doc => {
