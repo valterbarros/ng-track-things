@@ -35,6 +35,7 @@ const draggableReducer = createReducer(
   on(DraggableComponentsActions.scrolledPageSize, (state: State, props) => ({ ...state, scrolledPageSize: props.scrolledPageSize })),
   on(DraggableComponentsActions.factor, (state: State, props) => ({ ...state, factor: props.factor })),
   on(DraggableComponentsActions.subList, (state: State, props) => ({ ...state, subLists: [...state.subLists, props.subList] })),
+  on(DraggableComponentsActions.resetSubList, (state: State) => ({ ...state, subLists: [] })),
   on(DraggableComponentsActions.listCount, (state: State) => ({ ...state, listCount: state.listCount + 1 })),
 );
 

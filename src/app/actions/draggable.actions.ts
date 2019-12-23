@@ -8,4 +8,6 @@ export const scrolledPageSize = createAction('[Draggable Components] scrolledPag
 export const factor = createAction('[Draggable Components] factor', props<{ factor:  number; }>());
 export const requestSublist = createAction('[Draggable Components] requestSublist', props<{ listId:  string; }>());
 export const subList = createAction('[Draggable Components] subList', props<{ subList:  SubList; }>());
+export const resetSubList = createAction('[Draggable Components] reset subList');
 export const listCount = createAction('[Draggable Components] listCount');
+export const reorderCards = createAction('[Draggable Components] reorderCards', props<{list: {fromId: string, toId: string}, oldIndex: number, newIndex:number}>());

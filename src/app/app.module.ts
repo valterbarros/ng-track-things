@@ -18,6 +18,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+import { ListContentDirective } from './list-content.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AppEffects } from './app.effects';
     IndexSubListPage,
     CardComponent,
     CardSubListComponent,
-    FixForCssVarsDirective
+    FixForCssVarsDirective,
+    ListContentDirective
   ],
   imports: [
     ReactiveFormsModule,

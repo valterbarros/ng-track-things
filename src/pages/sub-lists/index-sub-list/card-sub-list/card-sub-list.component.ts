@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer2, Host } from '@angular/core';
 import { ListsService } from '../../../../providers/lists/lists.service';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../app/reducers/index';
@@ -57,7 +57,9 @@ export class CardSubListComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private store: Store<State>
+    private store: Store<State>,
+    private cardElement: ElementRef,
+    private renderer2: Renderer2,
   ) {
     this.scrollTopSizeList$ = store.pipe(select(state => state.draggable.scrollTopSizeList));
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
@@ -65,7 +67,6 @@ export class CardSubListComponent implements OnInit {
   }
   
   ngOnInit() {
-    console.log(this.placeHolderCardTemplate);
   }
 
   handleTouchStartCard (ev) {
@@ -74,7 +75,7 @@ export class CardSubListComponent implements OnInit {
     this.listMoved = false // Reset listMoved
     this.touchMovedWithoutHoldCard = false // Reset touchMovedWithoutHoldCard
     this.cursorPositionX = ev.targetTouches[0].clientX
-    this.cardMovedOldIndex = this.getCardIndexPosition(card) // Get current card position on list
+    this.cardMovedOldIndex = this.getCardIndexPosition(this.cardElement.nativeElement) // Get current card position on list
 
     this.holdTouchTimeId = setTimeout(() => {
       this.stylesCard.transform = 'rotate(3deg)'
@@ -105,17 +106,19 @@ export class CardSubListComponent implements OnInit {
 
     this.centerCardWithTouchCoordinates(card, touchLocation)
 
-    const otherCards = card.parentElement.parentElement.querySelectorAll('.card')
-    const defaultPlaceHolderCards = card.parentElement.parentElement.querySelectorAll('.default-placeholder-card')
+    const otherCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.card')
+    const defaultPlaceHolderCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.default-placeholder-card')
     
     for (let otherCard of [...otherCards, ...defaultPlaceHolderCards]) {
       if (otherCard === card) { continue }
 
       const distance = getDistanceBetweenElements(card, otherCard)
 
+      let cardToChange = otherCard.classList.contains('card') ? otherCard.parentElement : otherCard
+
       if (card.offsetTop > otherCard.offsetTop) {
         if (distance > 0 && distance < 80) {
-          otherCard.after(this.placeHolderCardTemplate)
+          cardToChange.after(this.placeHolderCardTemplate)
 
           this.addPlaceHolderCardOnFirstWhenOtherCardIsDefaultPlaceHolder(otherCard)
         }
@@ -123,7 +126,7 @@ export class CardSubListComponent implements OnInit {
 
       if (card.offsetTop < otherCard.offsetTop) {
         if (distance > 0 && distance < 80) {
-          otherCard.before(this.placeHolderCardTemplate)
+          cardToChange.before(this.placeHolderCardTemplate)
         }
       }
     }
@@ -132,7 +135,7 @@ export class CardSubListComponent implements OnInit {
     if (!this.listMoved) {
       const diferenceBetweenScroll = ev.targetTouches[0].clientX - this.cursorPositionX
       const sign = Math.sign(diferenceBetweenScroll)
-      const parentList = card.parentElement.parentElement.parentElement
+      const parentList = document.querySelector('.list-container')
 
       let currentList: number;
       this.currentListNumber$.subscribe(value => {currentList = value})
@@ -148,7 +151,8 @@ export class CardSubListComponent implements OnInit {
 
           this.store.dispatch(DraggableComponentsActions.factor({factor: 0.4}));
 
-          parentList.querySelectorAll('.list')[newCurrentListValue].appendChild(card)
+          const currentList = parentList.querySelectorAll('.list')[newCurrentListValue]
+          this.renderer2.appendChild(currentList, this.cardElement.nativeElement)
 
           this.listMoved = true
         }
@@ -185,34 +189,36 @@ export class CardSubListComponent implements OnInit {
 
   handleTouchEndCard (card: HTMLDivElement, ev: TouchEvent) {
     const touchEndTimeStamp = ev.timeStamp
-    let currentPlaceHolder = card.parentElement.parentElement.querySelector('.placeholder-card')
+    let currentPlaceHolder: HTMLDivElement = this.cardElement.nativeElement.parentElement.querySelector('.placeholder-card')
 
     if (this.touchMovedWithoutHoldCard || (touchEndTimeStamp - this.touchStartTimeStamp) < this.generalTimeout) {
       clearTimeout(this.holdTouchTimeId)
 
       return
     }
+
+
     ev.stopPropagation()
 
     if (currentPlaceHolder) {
-      currentPlaceHolder.replaceWith(card)
+      currentPlaceHolder.replaceWith(this.cardElement.nativeElement)
     }
 
     // Save card order
-    // this.cardMovedNewIndex = this.getCardIndexPosition(card)
+    const cardMovedNewIndex = this.getCardIndexPosition(this.cardElement.nativeElement)
 
-    // const subListParentIdAfterMoveCard = card.parentElement.parentElement.id
+    const subListParentIdAfterMoveCard = this.cardElement.nativeElement.parentElement.id
 
-    // this.saveCardsOrder(
-    //   {
-    //     list: {
-    //       from_id: this.originalSublistParentId,
-    //       to_id: subListParentIdAfterMoveCard
-    //     },
-    //     oldIndex: this.cardMovedOldIndex,
-    //     newIndex: this.cardMovedNewIndex
-    //   }
-    // )
+    this.store.dispatch(DraggableComponentsActions.reorderCards(
+      {
+        list: {
+          fromId: this.originalSublistParentId,
+          toId: subListParentIdAfterMoveCard
+        },
+        oldIndex: this.cardMovedOldIndex,
+        newIndex: cardMovedNewIndex
+      }
+    ));
 
     this.stylesCard.position = 'static'
     this.stylesCard.transform = 'rotate(0)'
@@ -222,7 +228,7 @@ export class CardSubListComponent implements OnInit {
   }
 
   getCardIndexPosition (card) {
-    return [...card.parentElement.querySelectorAll('.card')].indexOf(card)
+    return [...card.parentElement.querySelectorAll('card-sub-list')].indexOf(card)
   }
 
   handleTouchCancelCard () {

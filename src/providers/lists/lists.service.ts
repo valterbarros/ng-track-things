@@ -2,13 +2,39 @@ import { Injectable } from '@angular/core';
 import { firebaseDb } from '../firebase';
 import { Observable, from, of } from 'rxjs';
 import { concatMap, mergeMap, map } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { State } from '../../app/reducers/index';
+import * as DraggableComponentsActions from '../../app/actions/draggable.actions';
+
+//Move tha to utils maybe or another file
+function getSublistByIdFunction (subLists, id) {
+  return subLists.find((subList) => {
+    return subList.id === id
+  })
+}
+
+//Move tha to utils maybe or another file
+function updateCardsPositionAndParentListId (cardsCollection, listId) {
+  let order = 0
+
+  cardsCollection.forEach((card) => {
+    const cardId = card.id
+    card.order = order
+    order += 1
+
+    firebaseDb.collection('cards').doc(cardId).update({
+      order: order,
+      sub_list_id: listId
+    })
+  })
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListsService {
 
-  constructor() { }
+  constructor(private store: Store<State>) { }
 
   getLists() {
     const lists = []
@@ -64,6 +90,44 @@ export class ListsService {
     })
   }
 
-  reorderCards () {}
-  saveCardsOrder () {}
+  reorderCards (list, oldIndex, newIndex) {
+    const subLists$ = this.store.pipe(select(state => state.draggable.subLists))
+
+    let subLists;
+
+    subLists$.subscribe((value) => subLists = JSON.parse(JSON.stringify(value)))
+
+    const fromListId = list.fromId
+    const toListId = list.toId
+
+    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards
+
+    const cardRemovedFromFromList = cardsCollectionFromList.splice(oldIndex, 1)[0]
+
+    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards
+    cardsCollectionToList.splice(newIndex, 0, cardRemovedFromFromList)
+
+    this.store.dispatch(DraggableComponentsActions.resetSubList())
+
+    subLists.map((subList) => {
+      this.store.dispatch(DraggableComponentsActions.subList({subList: subList}))
+    })
+
+    this.saveCardsOrder(subLists, list)
+  }
+
+  saveCardsOrder (subLists, list) {
+    const fromListId = list.fromId
+    const toListId = list.toId
+    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards
+    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards
+
+    if (fromListId === toListId) {
+      updateCardsPositionAndParentListId(cardsCollectionFromList, fromListId)
+
+      return
+    }
+
+    updateCardsPositionAndParentListId(cardsCollectionToList, toListId)
+  }
 }
