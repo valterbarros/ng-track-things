@@ -9,7 +9,6 @@ import { IndexListPage } from '../pages/lists/index-list/index-list';
 import { CardComponent } from '../pages/lists/index-list/card/card.component'
 
 import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-list';
-import { CardSubListComponent } from '../pages/sub-lists/index-sub-list/card-sub-list/card-sub-list.component';
 
 import { FixForCssVarsDirective } from './fix-for-css-vars.directive';
 import { StoreModule } from '@ngrx/store';
@@ -19,6 +18,9 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import { ListContentDirective } from './list-content.directive';
+import { CardSubListComponent } from '../pages/sub-lists/index-sub-list/card-sub-list/card-sub-list.component';
+import { CreateNewCardButtonComponent } from '../pages/sub-lists/index-sub-list/create-new-card-button/create-new-card-button.component';
+import { CreateNewCardModalComponent } from 'src/pages/sub-lists/index-sub-list/create-new-card-modal/create-new-card-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { ListContentDirective } from './list-content.directive';
     CardComponent,
     CardSubListComponent,
     FixForCssVarsDirective,
-    ListContentDirective
+    ListContentDirective,
+    CreateNewCardButtonComponent,
+    CreateNewCardModalComponent
   ],
   imports: [
     ReactiveFormsModule,

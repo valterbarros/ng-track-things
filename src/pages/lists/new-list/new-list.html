@@ -3,17 +3,26 @@
     <input type="text" placeholder="Digite o nome da lista" formControlName="title"> <br>
     <textarea placeholder="Digite uma descrição" formControlName="description"></textarea>
 
-    <button (click)="addSubList(); $event.preventDefault();" id="add_sub_list">+</button>
-
     <div>
-      Sublists: <br>
+      <div>
+        <span>Sublists:</span>
+        <button
+          (click)="addSubList(); $event.preventDefault();"
+          id="add_sub_list"
+          class="ta-plus-icon"
+        > </button>
+      </div>
+
       <div
         *ngFor="let subList of listForm.get('subLists').controls; let i = index"
         formArrayName="subLists"
       >
         <div [formGroupName]="i">
-          <input type="text" formControlName="title">
-          <button (click)="removeSubList(i)"> - </button> <br>
+          <input type="text" formControlName="title" style="display: inline-block;">
+          <button
+            (click)="removeSubList(i)"
+            class="ta-trash-icon remove-button"
+          > </button>
         </div>
       </div>
     </div>

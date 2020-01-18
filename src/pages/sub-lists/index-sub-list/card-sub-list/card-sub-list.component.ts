@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Renderer2, Host } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer2, Host, HostListener } from '@angular/core';
 import { ListsService } from '../../../../providers/lists/lists.service';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../app/reducers/index';
@@ -196,7 +196,6 @@ export class CardSubListComponent implements OnInit {
 
       return
     }
-
 
     ev.stopPropagation()
 

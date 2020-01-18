@@ -16,8 +16,9 @@ export class IndexSubListPage implements OnInit {
   cursorPositionX: number = 0;
   locked: boolean = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
+  showNewCardModal = false;
   
-  //NGRX
+  // NGRX
   listCount$: Observable<number>;
   isSmoothed$: Observable<boolean>;
   currentListNumber$: Observable<number>;
@@ -36,9 +37,8 @@ export class IndexSubListPage implements OnInit {
     this.scrolledPageSize$ = store.pipe(select(state => state.draggable.scrolledPageSize));
     this.subLists$ = store.pipe(select(state => state.draggable.subLists));
     this.listCount$ = store.pipe(select(state => state.draggable.listCount));
-    
-    const listId = this.route.snapshot.paramMap.get('listId')
-    store.dispatch(DraggableComponentsActions.requestSublist({listId: listId}));
+    const listId = this.route.snapshot.paramMap.get('listId');
+    store.dispatch(DraggableComponentsActions.requestSublist({ listId }));
   }
 
   ngOnInit() {}

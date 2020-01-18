@@ -35,11 +35,10 @@
         class="default-placeholder-card">
       </div>
 
-      <!-- <create-new-card-button
-        :subListId="subList.id"
-        @change-dialog-visible-value="handleChangeDialogVisibleValue"
-        @change-current-sub-list-id-value="handleChangeCurrentSubListIdValue"
-      ></create-new-card-button> -->
+      <create-new-card-button
+        [subListId]="subList.id"
+        (click)="showNewCardModal = true"
+      ></create-new-card-button>
     </div>
   </div>
 
@@ -50,4 +49,9 @@
   ></create-new-card-modal>
 
   <card-info-modal></card-info-modal> -->
+
+  <create-new-card-modal
+    (closeModal)="showNewCardModal = false"
+    *ngIf="showNewCardModal">
+  </create-new-card-modal>
 </div>
