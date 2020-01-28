@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewListPage } from '../pages/lists/new-list/new-list';
 import { IndexListPage } from '../pages/lists/index-list/index-list';
-import { CardComponent } from '../pages/lists/index-list/card/card.component'
+import { CardComponent } from '../pages/lists/index-list/card/card.component';
 
 import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-list';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListsService } from '../../../providers/lists/lists.service'
+import { ListsService } from '../../../providers/lists/lists.service';
 
 @Component({
   selector: 'app-index-list',
@@ -7,15 +7,15 @@ import { ListsService } from '../../../providers/lists/lists.service'
   styleUrls: ['./index-list.scss']
 })
 export class IndexListPage implements OnInit {
-  lists:Array<any> = [];
+  lists: Array<any> = [];
   subListsCount: number;
 
-  constructor (
+  constructor(
     private listsService: ListsService
   ) {}
 
-  ngOnInit () {
+  ngOnInit() {
     this.lists = this.listsService.getLists();
-    setTimeout(() => {console.log(this.lists);}, 1000);
+    setTimeout(() => {console.log(this.lists); }, 1000);
   }
 }

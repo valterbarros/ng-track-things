@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { ListsService } from '../../../providers/lists/lists.service'
+import { ListsService } from '../../../providers/lists/lists.service';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
 import { SubList } from '../../../app/models/sub-lists-model';
@@ -13,8 +13,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./index-sub-list.scss']
 })
 export class IndexSubListPage implements OnInit {
-  cursorPositionX: number = 0;
-  locked: boolean = false;
+  cursorPositionX = 0;
+  locked = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
 
   // NGRX
@@ -41,14 +41,14 @@ export class IndexSubListPage implements OnInit {
   }
 
   handleTouchStartList(ev: TouchEvent) {
-    this.cursorPositionX = ev.targetTouches[0].clientX
-    this.locked = true
+    this.cursorPositionX = ev.targetTouches[0].clientX;
+    this.locked = true;
   }
 
   handleTouchMoveList(ev: TouchEvent) {
-    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}))
+    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}));
 
-    const diferenceBetweenScrollX = ev.changedTouches[0].clientX - this.cursorPositionX
+    const diferenceBetweenScrollX = ev.changedTouches[0].clientX - this.cursorPositionX;
 
     if (Math.abs(diferenceBetweenScrollX) > 50 && this.locked) {
       this.store.dispatch(DraggableComponentsActions.scrolledPageSize({scrolledPageSize: `${Math.round(diferenceBetweenScrollX)}px`}));
@@ -56,28 +56,28 @@ export class IndexSubListPage implements OnInit {
   }
 
   async handleTouchEndList(ev: TouchEvent, listOffsetWidth: number) {
-    const diferenceBetweenScroll = ev.changedTouches[0].clientX - this.cursorPositionX
-    const sign = Math.sign(diferenceBetweenScroll)
-    const factor = +(sign * diferenceBetweenScroll / listOffsetWidth).toFixed(2)
+    const diferenceBetweenScroll = ev.changedTouches[0].clientX - this.cursorPositionX;
+    const sign = Math.sign(diferenceBetweenScroll);
+    const factor = +(sign * diferenceBetweenScroll / listOffsetWidth).toFixed(2);
 
     let currentListNumber: number;
-    this.currentListNumber$.subscribe(value => { currentListNumber = value })
-    
+    this.currentListNumber$.subscribe(value => { currentListNumber = value; });
+
     let listCount: number;
-    this.listCount$.subscribe(value => { listCount = value })
-    
+    this.listCount$.subscribe(value => { listCount = value; });
+
     if ((currentListNumber > 0 || sign < 0) && (currentListNumber < listCount - 1 || sign > 0) && factor > 0.2) {
-      this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}))
+      this.store.dispatch(DraggableComponentsActions.currentListNumber({currentListNumber: (currentListNumber -= sign)}));
     }
 
-    this.store.dispatch(DraggableComponentsActions.factor({factor: factor}));
+    this.store.dispatch(DraggableComponentsActions.factor({factor}));
     this.store.dispatch(DraggableComponentsActions.scrolledPageSize({scrolledPageSize: '0px'}));
 
-    this.locked = false
+    this.locked = false;
 
-    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}))
+    this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: !this.locked}));
 
-    this.cursorPositionX = null
+    this.cursorPositionX = null;
   }
 
   handleTouchCancelList(_ev: TouchEvent) {
@@ -85,15 +85,15 @@ export class IndexSubListPage implements OnInit {
 
   @HostListener('scroll', ['$event'])
   handleScrollEventChange(scrollTop: number) {
-    this.store.dispatch(DraggableComponentsActions.scrollTopSizeList({scrollTopSizeList: scrollTop}))
+    this.store.dispatch(DraggableComponentsActions.scrollTopSizeList({scrollTopSizeList: scrollTop}));
   }
 
-  generatePlaceHolderCard () : HTMLDivElement {
-    const placeHolderCard = document.createElement('div')
+  generatePlaceHolderCard(): HTMLDivElement {
+    const placeHolderCard = document.createElement('div');
 
-    placeHolderCard.classList.add('placeholder-card')
+    placeHolderCard.classList.add('placeholder-card');
 
-    return placeHolderCard
+    return placeHolderCard;
   }
 
   trackElement(index: number, element: any) {

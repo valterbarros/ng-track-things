@@ -7,27 +7,27 @@ import { State } from '../../app/reducers/index';
 import * as DraggableComponentsActions from '../../app/actions/draggable.actions';
 import { Card } from 'src/app/models/sub-lists-model';
 
-//Move tha to utils maybe or another file
+// Move tha to utils maybe or another file
 function getSublistByIdFunction(subLists, id) {
   return subLists.find((subList) => {
-    return subList.id === id
-  })
+    return subList.id === id;
+  });
 }
 
-//Move tha to utils maybe or another file
+// Move tha to utils maybe or another file
 function updateCardsPositionAndParentListId(cardsCollection, listId) {
-  let order = 0
+  let order = 0;
 
   cardsCollection.forEach((card) => {
-    const cardId = card.id
-    card.order = order
-    order += 1
+    const cardId = card.id;
+    card.order = order;
+    order += 1;
 
     firebaseDb.collection('cards').doc(cardId).update({
-      order: order,
+      order,
       sub_list_id: listId
-    })
-  })
+    });
+  });
 }
 
 @Injectable({
@@ -43,7 +43,7 @@ export class ListsService {
     firebaseDb.collection('lists').get().then((querySnapshot) => {
       querySnapshot.forEach(doc => {
         lists.push({ ...doc.data(), docId: doc.id });
-      })
+      });
     }).catch((e) => {
       console.log(e);
     });
@@ -52,20 +52,20 @@ export class ListsService {
   }
 
   getSubListsCount(listId: string): Promise<number> {
-    let subListsCount: number = 0;
+    let subListsCount = 0;
 
-    return new Promise(async function (resolve, reject) {
+    return new Promise(async function(resolve, reject) {
       await firebaseDb.collection('sub_lists').where('list_id', '==', listId).get().then((querySnapshot) => {
         querySnapshot.forEach(doc => {
-          subListsCount += 1
-        })
+          subListsCount += 1;
+        });
       }).catch((e) => {
-        console.log(e)
+        console.log(e);
         reject(e);
       });
 
       resolve(subListsCount);
-    })
+    });
   }
 
   createListAndSublist() { }
@@ -74,21 +74,21 @@ export class ListsService {
     return new Observable(observer => {
       firebaseDb.collection('sub_lists').where('list_id', '==', docId).get().then((querySnapshot) => {
         querySnapshot.forEach(async doc => {
-          const subListDocId = doc.id
-          let cards: Array<any> = []
+          const subListDocId = doc.id;
+          let cards: Array<any> = [];
 
-          const querySnapshot = await firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get()
+          const querySnapshot = await firebaseDb.collection('cards').where('sub_list_id', '==', subListDocId).orderBy('order').get();
 
           querySnapshot.forEach(doc => {
-            const cardId: string = doc.id
+            const cardId: string = doc.id;
 
-            cards = [...cards, { ...doc.data(), id: cardId }]
-          })
+            cards = [...cards, { ...doc.data(), id: cardId }];
+          });
 
-          observer.next({ ...doc.data(), cards: cards, id: subListDocId })
-        })
-      })
-    })
+          observer.next({ ...doc.data(), cards, id: subListDocId });
+        });
+      });
+    });
   }
 
   reorderCards(list, oldIndex, newIndex) {
@@ -112,9 +112,9 @@ export class ListsService {
 
     subLists.map((subList) => {
       this.store.dispatch(DraggableComponentsActions.subList({ subList }));
-    })
+    });
 
-    this.saveCardsOrder(subLists, list)
+    this.saveCardsOrder(subLists, list);
   }
 
   saveCardsOrder(subLists, list) {

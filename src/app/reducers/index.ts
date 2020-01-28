@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import * as draggableReducer from './draggable.reducer';
 
 export interface State {
-  draggable: draggableReducer.State
+  draggable: draggableReducer.State;
 }
 
 export const reducers: ActionReducerMap<State> = {

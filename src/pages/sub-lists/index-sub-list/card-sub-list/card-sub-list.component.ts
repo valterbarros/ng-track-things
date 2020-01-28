@@ -8,12 +8,12 @@ import * as DraggableComponentsActions from '../../../../app/actions/draggable.a
 import { Card } from 'src/app/models/sub-lists-model';
 
 interface StyleCard {
-  left: string,
-  top: string,
-  transform: string,
-  opacity: string,
-  position: string,
-  zIndex: string
+  left: string;
+  top: string;
+  transform: string;
+  opacity: string;
+  position: string;
+  zIndex: string;
 }
 
 @Component({
@@ -29,26 +29,26 @@ export class CardSubListComponent implements OnInit {
     opacity: '1',
     position: 'static',
     zIndex: ''
-  }
+  };
 
   listMoved: boolean;
   touchMovedWithoutHoldCard: boolean;
   cursorPositionX: number;
   cardMovedOldIndex: number;
   holdTouchTimeId: any;
-  generalTimeout: number = 300;
+  generalTimeout = 300;
   touchStartTimeStamp: number;
   cardTopOffset: number = this.getTopParentSize();
 
   @Input()
   placeHolderCardTemplate: HTMLDivElement;
-  
+
   @Input()
   title: string;
-  
+
   @Input()
   originalSublistParentId: string;
-  
+
   @Input()
   currentClickedCardId: string;
 
@@ -69,85 +69,85 @@ export class CardSubListComponent implements OnInit {
     this.currentListNumber$ = store.pipe(select(state => state.draggable.currentListNumber));
     this.listCount$ = store.pipe(select(state => state.draggable.listCount));
   }
-  
+
   ngOnInit() {
   }
 
-  handleTouchStartCard (ev) {
-    const card = ev.currentTarget
+  handleTouchStartCard(ev) {
+    const card = ev.currentTarget;
 
-    this.listMoved = false // Reset listMoved
-    this.touchMovedWithoutHoldCard = false // Reset touchMovedWithoutHoldCard
-    this.cursorPositionX = ev.targetTouches[0].clientX
-    this.cardMovedOldIndex = this.getCardIndexPosition(this.cardElement.nativeElement) // Get current card position on list
+    this.listMoved = false; // Reset listMoved
+    this.touchMovedWithoutHoldCard = false; // Reset touchMovedWithoutHoldCard
+    this.cursorPositionX = ev.targetTouches[0].clientX;
+    this.cardMovedOldIndex = this.getCardIndexPosition(this.cardElement.nativeElement); // Get current card position on list
 
     this.holdTouchTimeId = setTimeout(() => {
-      this.stylesCard.transform = 'rotate(3deg)'
-      this.stylesCard.opacity = '0.9'
-      navigator.vibrate(28)
-    }, this.generalTimeout)
+      this.stylesCard.transform = 'rotate(3deg)';
+      this.stylesCard.opacity = '0.9';
+      navigator.vibrate(28);
+    }, this.generalTimeout);
 
     this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: true}));
 
-    this.touchStartTimeStamp = ev.timeStamp
+    this.touchStartTimeStamp = ev.timeStamp;
   }
 
-  handleTouchMoveCard (ev) {
-    const card = ev.currentTarget
-    const touchEndTimeStamp = ev.timeStamp
-    const touchLocation = ev.targetTouches[0]
+  handleTouchMoveCard(ev) {
+    const card = ev.currentTarget;
+    const touchEndTimeStamp = ev.timeStamp;
+    const touchLocation = ev.targetTouches[0];
 
     if (this.touchMovedWithoutHoldCard || (touchEndTimeStamp - this.touchStartTimeStamp) < this.generalTimeout) {
-      this.touchMovedWithoutHoldCard = true
+      this.touchMovedWithoutHoldCard = true;
 
-      clearTimeout(this.holdTouchTimeId)
+      clearTimeout(this.holdTouchTimeId);
 
-      return
+      return;
     }
 
-    ev.preventDefault()
-    ev.stopPropagation()
+    ev.preventDefault();
+    ev.stopPropagation();
 
-    this.centerCardWithTouchCoordinates(card, touchLocation)
+    this.centerCardWithTouchCoordinates(card, touchLocation);
 
-    const otherCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.card')
-    const defaultPlaceHolderCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.default-placeholder-card')
-    
-    for (let otherCard of [...otherCards, ...defaultPlaceHolderCards]) {
-      if (otherCard === card) { continue }
+    const otherCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.card');
+    const defaultPlaceHolderCards = this.cardElement.nativeElement.parentElement.querySelectorAll('.default-placeholder-card');
 
-      const distance = getDistanceBetweenElements(card, otherCard)
+    for (const otherCard of [...otherCards, ...defaultPlaceHolderCards]) {
+      if (otherCard === card) { continue; }
 
-      let cardToChange = otherCard.classList.contains('card') ? otherCard.parentElement : otherCard
+      const distance = getDistanceBetweenElements(card, otherCard);
+
+      const cardToChange = otherCard.classList.contains('card') ? otherCard.parentElement : otherCard;
 
       if (card.offsetTop > otherCard.offsetTop) {
         if (distance > 0 && distance < 80) {
-          cardToChange.after(this.placeHolderCardTemplate)
+          cardToChange.after(this.placeHolderCardTemplate);
 
-          this.addPlaceHolderCardOnFirstWhenOtherCardIsDefaultPlaceHolder(otherCard)
+          this.addPlaceHolderCardOnFirstWhenOtherCardIsDefaultPlaceHolder(otherCard);
         }
       }
 
       if (card.offsetTop < otherCard.offsetTop) {
         if (distance > 0 && distance < 80) {
-          cardToChange.before(this.placeHolderCardTemplate)
+          cardToChange.before(this.placeHolderCardTemplate);
         }
       }
     }
 
     // Code to move card of list
     if (!this.listMoved) {
-      const diferenceBetweenScroll = ev.targetTouches[0].clientX - this.cursorPositionX
-      const sign = Math.sign(diferenceBetweenScroll)
-      const parentList = document.querySelector('.list-container')
+      const diferenceBetweenScroll = ev.targetTouches[0].clientX - this.cursorPositionX;
+      const sign = Math.sign(diferenceBetweenScroll);
+      const parentList = document.querySelector('.list-container');
 
       let currentList: number;
-      this.currentListNumber$.subscribe(value => {currentList = value})
+      this.currentListNumber$.subscribe(value => {currentList = value;});
 
       let listCount: number;
-      this.listCount$.subscribe(value => {listCount = value})
-      
-      const newCurrentListValue = currentList += sign
+      this.listCount$.subscribe(value => {listCount = value;});
+
+      const newCurrentListValue = currentList += sign;
 
       if (Math.abs(card.offsetLeft) > this.fortyPercentyOfCardSize(card)) {
         if ((newCurrentListValue >= 0) && (newCurrentListValue <= listCount - 1)) {
@@ -155,10 +155,10 @@ export class CardSubListComponent implements OnInit {
 
           this.store.dispatch(DraggableComponentsActions.factor({factor: 0.4}));
 
-          const currentList = parentList.querySelectorAll('.list')[newCurrentListValue]
-          this.renderer2.appendChild(currentList, this.cardElement.nativeElement)
+          const currentList = parentList.querySelectorAll('.list')[newCurrentListValue];
+          this.renderer2.appendChild(currentList, this.cardElement.nativeElement);
 
-          this.listMoved = true
+          this.listMoved = true;
         }
       }
 
@@ -166,51 +166,51 @@ export class CardSubListComponent implements OnInit {
     }
   }
 
-  centerCardWithTouchCoordinates (card, touchLocation) {
-    const diferenceBetweenScroll: string = `${touchLocation.clientX - this.cursorPositionX}px`
+  centerCardWithTouchCoordinates(card, touchLocation) {
+    const diferenceBetweenScroll = `${touchLocation.clientX - this.cursorPositionX}px`;
     let scrollTopSizeList: number;
-    this.scrollTopSizeList$.subscribe(value => {scrollTopSizeList = value})
+    this.scrollTopSizeList$.subscribe(value => {scrollTopSizeList = value;});
 
-    this.stylesCard.position = 'absolute'
-    this.stylesCard.left = diferenceBetweenScroll
-    this.stylesCard.top = touchLocation.clientY - (card.offsetHeight / 2) - this.cardTopOffset + scrollTopSizeList + 'px'
-    this.stylesCard.zIndex = '2'
+    this.stylesCard.position = 'absolute';
+    this.stylesCard.left = diferenceBetweenScroll;
+    this.stylesCard.top = touchLocation.clientY - (card.offsetHeight / 2) - this.cardTopOffset + scrollTopSizeList + 'px';
+    this.stylesCard.zIndex = '2';
   }
 
-  addPlaceHolderCardOnFirstWhenOtherCardIsDefaultPlaceHolder (otherCard) {
+  addPlaceHolderCardOnFirstWhenOtherCardIsDefaultPlaceHolder(otherCard) {
     if (otherCard.classList.contains('default-placeholder-card')) {
-      otherCard.before(this.placeHolderCardTemplate)
+      otherCard.before(this.placeHolderCardTemplate);
     }
   }
 
-  fortyPercentyOfCardSize (card) {
-    return (card.offsetWidth / 2) * 0.4
+  fortyPercentyOfCardSize(card) {
+    return (card.offsetWidth / 2) * 0.4;
   }
 
-  getTopParentSize (): number {
-    return document.querySelector('.list-wrapper').getBoundingClientRect().top
+  getTopParentSize(): number {
+    return document.querySelector('.list-wrapper').getBoundingClientRect().top;
   }
 
-  handleTouchEndCard (card: HTMLDivElement, ev: TouchEvent) {
-    const touchEndTimeStamp = ev.timeStamp
-    let currentPlaceHolder: HTMLDivElement = this.cardElement.nativeElement.parentElement.querySelector('.placeholder-card')
+  handleTouchEndCard(card: HTMLDivElement, ev: TouchEvent) {
+    const touchEndTimeStamp = ev.timeStamp;
+    const currentPlaceHolder: HTMLDivElement = this.cardElement.nativeElement.parentElement.querySelector('.placeholder-card');
 
     if (this.touchMovedWithoutHoldCard || (touchEndTimeStamp - this.touchStartTimeStamp) < this.generalTimeout) {
-      clearTimeout(this.holdTouchTimeId)
+      clearTimeout(this.holdTouchTimeId);
 
-      return
+      return;
     }
 
-    ev.stopPropagation()
+    ev.stopPropagation();
 
     if (currentPlaceHolder) {
-      currentPlaceHolder.replaceWith(this.cardElement.nativeElement)
+      currentPlaceHolder.replaceWith(this.cardElement.nativeElement);
     }
 
     // Save card order
-    const cardMovedNewIndex = this.getCardIndexPosition(this.cardElement.nativeElement)
+    const cardMovedNewIndex = this.getCardIndexPosition(this.cardElement.nativeElement);
 
-    const subListParentIdAfterMoveCard = this.cardElement.nativeElement.parentElement.id
+    const subListParentIdAfterMoveCard = this.cardElement.nativeElement.parentElement.id;
 
     this.store.dispatch(DraggableComponentsActions.reorderCards(
       {
@@ -223,19 +223,19 @@ export class CardSubListComponent implements OnInit {
       }
     ));
 
-    this.stylesCard.position = 'static'
-    this.stylesCard.transform = 'rotate(0)'
-    this.stylesCard.opacity = '1'
+    this.stylesCard.position = 'static';
+    this.stylesCard.transform = 'rotate(0)';
+    this.stylesCard.opacity = '1';
 
     this.store.dispatch(DraggableComponentsActions.isSmoothed({isSmoothed: false}));
   }
 
-  getCardIndexPosition (card) {
-    return [...card.parentElement.querySelectorAll('card-sub-list')].indexOf(card)
+  getCardIndexPosition(card) {
+    return [...card.parentElement.querySelectorAll('card-sub-list')].indexOf(card);
   }
 
-  handleTouchCancelCard () {
-    this.stylesCard.transform = 'rotate(0)'
-    this.stylesCard.opacity = '1'
+  handleTouchCancelCard() {
+    this.stylesCard.transform = 'rotate(0)';
+    this.stylesCard.opacity = '1';
   }
 }

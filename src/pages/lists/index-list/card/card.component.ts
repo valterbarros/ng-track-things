@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ListsService } from '../../../../providers/lists/lists.service'
+import { ListsService } from '../../../../providers/lists/lists.service';
 
 @Component({
   selector: 'card',
@@ -22,6 +22,6 @@ export class CardComponent implements OnInit {
   }
 
   async getSubListsCount(id: string) {
-    this.count = await this.listsService.getSubListsCount(id)
+    this.count = await this.listsService.getSubListsCount(id);
   }
 }

@@ -8,13 +8,13 @@ import * as DraggableComponentsActions from '../actions/draggable.actions';
 import { SubList } from '../models/sub-lists-model';
 
 export interface State {
-  isSmoothed: boolean,
-  currentListNumber: number,
-  scrollTopSizeList: number,
-  scrolledPageSize: string,
-  factor: number,
-  subLists: SubList[],
-  listCount: number,
+  isSmoothed: boolean;
+  currentListNumber: number;
+  scrollTopSizeList: number;
+  scrolledPageSize: string;
+  factor: number;
+  subLists: SubList[];
+  listCount: number;
   clickedSubList: string;
 }
 
