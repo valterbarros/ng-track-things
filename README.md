@@ -15,6 +15,10 @@ I gave an example from exercise but the idea from the app is for whatever task t
 
 You can see that same project using Vuejs [here](https://github.com/valterbarros/trackthings)
 
+## Drag n Drop
+
+The drag n drop for cards and list's moviment things like colision, distance, future card position was done using pure javascript and **0 libs to do that work** I did that to practice javacript and my logic, you can see more about that features on lists: src/pages/sub-lists/index-sub-list/index-sub-list.ts, src/pages/sub-lists/index-sub-list/index-sub-list.html, src/pages/sub-lists/index-sub-list/index-sub-list.scss. and cards on folder: src/pages/sub-lists/index-sub-list/card-sub-list/.ts, .html, .scss
+
 ## Development server
 
 ```
