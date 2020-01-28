@@ -5,6 +5,7 @@ import { State } from '../../../../app/reducers/index';
 import { Observable } from 'rxjs';
 import { getDistanceBetweenElements } from '../../../../utils/calculations';
 import * as DraggableComponentsActions from '../../../../app/actions/draggable.actions';
+import { Card } from 'src/app/models/sub-lists-model';
 
 interface StyleCard {
   left: string,
@@ -50,6 +51,9 @@ export class CardSubListComponent implements OnInit {
   
   @Input()
   currentClickedCardId: string;
+
+  @Input()
+  lastCard: Card;
 
   scrollTopSizeList$: Observable<number>;
   currentListNumber$: Observable<number>;

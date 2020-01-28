@@ -1,4 +1,5 @@
 <div
+  [class.last-card-child]="lastCard"
   class="card draggable"
   [ngStyle]="stylesCard"
   (touchstart)="handleTouchStartCard($event)"

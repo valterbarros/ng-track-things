@@ -5,16 +5,17 @@ import { concatMap, mergeMap, map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../app/reducers/index';
 import * as DraggableComponentsActions from '../../app/actions/draggable.actions';
+import { Card } from 'src/app/models/sub-lists-model';
 
 //Move tha to utils maybe or another file
-function getSublistByIdFunction (subLists, id) {
+function getSublistByIdFunction(subLists, id) {
   return subLists.find((subList) => {
     return subList.id === id
   })
 }
 
 //Move tha to utils maybe or another file
-function updateCardsPositionAndParentListId (cardsCollection, listId) {
+function updateCardsPositionAndParentListId(cardsCollection, listId) {
   let order = 0
 
   cardsCollection.forEach((card) => {
@@ -37,15 +38,15 @@ export class ListsService {
   constructor(private store: Store<State>) { }
 
   getLists() {
-    const lists = []
+    const lists = [];
 
     firebaseDb.collection('lists').get().then((querySnapshot) => {
       querySnapshot.forEach(doc => {
-        lists.push({ ...doc.data(), docId: doc.id })
+        lists.push({ ...doc.data(), docId: doc.id });
       })
     }).catch((e) => {
-      console.log(e)
-    })
+      console.log(e);
+    });
 
     return lists;
   }
@@ -69,7 +70,7 @@ export class ListsService {
 
   createListAndSublist() { }
 
-  getSublists (docId: string) : Observable<any> {
+  getSublists(docId: string): Observable<any> {
     return new Observable(observer => {
       firebaseDb.collection('sub_lists').where('list_id', '==', docId).get().then((querySnapshot) => {
         querySnapshot.forEach(async doc => {
@@ -81,53 +82,85 @@ export class ListsService {
           querySnapshot.forEach(doc => {
             const cardId: string = doc.id
 
-            cards = [...cards, {...doc.data(), id: cardId}]
+            cards = [...cards, { ...doc.data(), id: cardId }]
           })
 
-          observer.next({...doc.data(), cards: cards, id: subListDocId })
+          observer.next({ ...doc.data(), cards: cards, id: subListDocId })
         })
       })
     })
   }
 
-  reorderCards (list, oldIndex, newIndex) {
-    const subLists$ = this.store.pipe(select(state => state.draggable.subLists))
+  reorderCards(list, oldIndex, newIndex) {
+    const subLists$ = this.store.pipe(select(state => state.draggable.subLists));
 
     let subLists;
 
-    subLists$.subscribe((value) => subLists = JSON.parse(JSON.stringify(value)))
+    subLists$.subscribe((value) => subLists = JSON.parse(JSON.stringify(value))).unsubscribe();
 
-    const fromListId = list.fromId
-    const toListId = list.toId
+    const fromListId = list.fromId;
+    const toListId = list.toId;
 
-    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards
+    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards;
 
-    const cardRemovedFromFromList = cardsCollectionFromList.splice(oldIndex, 1)[0]
+    const cardRemovedFromFromList = cardsCollectionFromList.splice(oldIndex, 1)[0];
 
-    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards
-    cardsCollectionToList.splice(newIndex, 0, cardRemovedFromFromList)
+    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards;
+    cardsCollectionToList.splice(newIndex, 0, cardRemovedFromFromList);
 
-    this.store.dispatch(DraggableComponentsActions.resetSubList())
+    this.store.dispatch(DraggableComponentsActions.resetSubList());
 
     subLists.map((subList) => {
-      this.store.dispatch(DraggableComponentsActions.subList({subList: subList}))
+      this.store.dispatch(DraggableComponentsActions.subList({ subList }));
     })
 
     this.saveCardsOrder(subLists, list)
   }
 
-  saveCardsOrder (subLists, list) {
-    const fromListId = list.fromId
-    const toListId = list.toId
-    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards
-    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards
+  saveCardsOrder(subLists, list) {
+    const fromListId = list.fromId;
+    const toListId = list.toId;
+    const cardsCollectionFromList = getSublistByIdFunction(subLists, fromListId).cards;
+    const cardsCollectionToList = getSublistByIdFunction(subLists, toListId).cards;
 
     if (fromListId === toListId) {
-      updateCardsPositionAndParentListId(cardsCollectionFromList, fromListId)
+      updateCardsPositionAndParentListId(cardsCollectionFromList, fromListId);
 
-      return
+      return;
     }
 
-    updateCardsPositionAndParentListId(cardsCollectionToList, toListId)
+    updateCardsPositionAndParentListId(cardsCollectionToList, toListId);
+  }
+
+  addNewCardToList(newCard) {
+    const subLists$ = this.store.pipe(select(state => state.draggable.subLists));
+
+    let subLists;
+
+    subLists$.subscribe((value) => subLists = JSON.parse(JSON.stringify(value))).unsubscribe();
+
+    const cardsCollectionFromList = getSublistByIdFunction(subLists, newCard.sub_list_id).cards;
+
+    const firebaseReference = this.generateANewCardReference();
+    newCard.id = firebaseReference.id;
+
+    cardsCollectionFromList.unshift(newCard);
+    this.store.dispatch(DraggableComponentsActions.resetSubList());
+
+    subLists.map((subList) => {
+      this.store.dispatch(DraggableComponentsActions.subList({ subList }));
+    });
+
+    this.saveNewCard(firebaseReference, newCard);
+  }
+
+  generateANewCardReference(): firebase.firestore.DocumentReference {
+    return firebaseDb.collection('cards').doc();
+  }
+
+  saveNewCard(reference: firebase.firestore.DocumentReference, newCard: Card) {
+    reference.set(newCard).catch(err => {
+      console.log(err);
+    });
   }
 }

@@ -1,0 +1,12 @@
+<div class="card">
+  <textarea
+    (blur)="blurHandler()"
+    #cardTitle class="card-title"
+    placeholder="Enter a title for this card..."
+    [(ngModel)]="cardNameText"
+  ></textarea>
+
+  <button (click)="saveCard()" class="success-button">Add Card</button>
+
+  <button class="ta-close-icon close-icon"></button>
+</div>

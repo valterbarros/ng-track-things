@@ -25,6 +25,10 @@
   &:first-child {
     margin-top: 0.5em;
   }
+
+  &.last-card-child {
+    margin-bottom: 2.5em;
+  }
 }
 
 .card-header {
@@ -77,4 +81,10 @@
 
 .responsibles img {
   border-radius: 50%;
+}
+
+:host-context(.has-scroll) {
+  .last-card-child {
+    margin-bottom: 0.5em;
+  }
 }

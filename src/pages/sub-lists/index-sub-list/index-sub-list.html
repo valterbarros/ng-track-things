@@ -11,7 +11,7 @@
     <div
       #list
       class="list"
-      *ngFor="let subList of subLists$ | async"
+      *ngFor="let subList of subLists$ | async; trackBy: trackElement"
       (scroll)="handleScrollEventChange(list.scrollTop)"
       (touchstart)="handleTouchStartList($event)"
       (touchmove)="handleTouchMoveList($event)"
@@ -21,13 +21,16 @@
 
       <div class="list-title">{{ subList.title }}</div>
 
+      <create-new-card></create-new-card>
+      
       <card-sub-list
         #cards
         [originalSublistParentId]="subList.id"
         [title]="card.name"
         [placeHolderCardTemplate]="placeHolderCardTemplate"
         [currentClickedCardId]="card.id"
-        *ngFor="let card of subList.cards"></card-sub-list>
+        [lastCard]="last"
+        *ngFor="let card of subList.cards; trackBy: trackElement; let last = last;"></card-sub-list>
 
       <div
         [class.none]="subList.cards.length"
@@ -37,7 +40,6 @@
 
       <create-new-card-button
         [subListId]="subList.id"
-        (click)="showNewCardModal = true"
       ></create-new-card-button>
     </div>
   </div>
@@ -50,8 +52,8 @@
 
   <card-info-modal></card-info-modal> -->
 
-  <create-new-card-modal
+  <!-- <create-new-card-modal
     (closeModal)="showNewCardModal = false"
     *ngIf="showNewCardModal">
-  </create-new-card-modal>
+  </create-new-card-modal> -->
 </div>

@@ -20,7 +20,7 @@ import { AppEffects } from './app.effects';
 import { ListContentDirective } from './list-content.directive';
 import { CardSubListComponent } from '../pages/sub-lists/index-sub-list/card-sub-list/card-sub-list.component';
 import { CreateNewCardButtonComponent } from '../pages/sub-lists/index-sub-list/create-new-card-button/create-new-card-button.component';
-import { CreateNewCardModalComponent } from 'src/pages/sub-lists/index-sub-list/create-new-card-modal/create-new-card-modal.component';
+import { CreateNewCardComponent } from 'src/pages/sub-lists/index-sub-list/create-new-card/create-new-card.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { CreateNewCardModalComponent } from 'src/pages/sub-lists/index-sub-list/
     FixForCssVarsDirective,
     ListContentDirective,
     CreateNewCardButtonComponent,
-    CreateNewCardModalComponent
+    CreateNewCardComponent
   ],
   imports: [
     ReactiveFormsModule,

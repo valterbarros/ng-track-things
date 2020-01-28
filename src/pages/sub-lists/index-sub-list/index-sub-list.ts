@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service'
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
@@ -16,8 +16,7 @@ export class IndexSubListPage implements OnInit {
   cursorPositionX: number = 0;
   locked: boolean = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
-  showNewCardModal = false;
-  
+
   // NGRX
   listCount$: Observable<number>;
   isSmoothed$: Observable<boolean>;
@@ -40,8 +39,6 @@ export class IndexSubListPage implements OnInit {
     const listId = this.route.snapshot.paramMap.get('listId');
     store.dispatch(DraggableComponentsActions.requestSublist({ listId }));
   }
-
-  ngOnInit() {}
 
   handleTouchStartList(ev: TouchEvent) {
     this.cursorPositionX = ev.targetTouches[0].clientX
@@ -85,9 +82,9 @@ export class IndexSubListPage implements OnInit {
 
   handleTouchCancelList(_ev: TouchEvent) {
   }
-  
-  @HostListener('scroll', ['$event']) 
-  handleScrollEventChange (scrollTop: number) {
+
+  @HostListener('scroll', ['$event'])
+  handleScrollEventChange(scrollTop: number) {
     this.store.dispatch(DraggableComponentsActions.scrollTopSizeList({scrollTopSizeList: scrollTop}))
   }
 
@@ -97,5 +94,9 @@ export class IndexSubListPage implements OnInit {
     placeHolderCard.classList.add('placeholder-card')
 
     return placeHolderCard
+  }
+
+  trackElement(index: number, element: any) {
+    return element ? element.id : null;
   }
 }

@@ -1,0 +1,49 @@
+.card {
+  display: none;
+  white-space: normal;
+  width: 96%;
+  text-align: left;
+  padding: 6px 8px 2px;
+  background: white;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 45, 66, 0.25);
+  @media screen and(min-width: 1336px) {
+    cursor: pointer;
+  }
+
+  @media screen and(max-width: 380px) {
+    cursor: default;
+  }
+  min-height: 20px;
+  position: relative;
+  text-decoration: none;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  box-sizing: border-box;
+  &:first-child {
+    margin-top: 0.5em;
+  }
+}
+
+.card-title {
+  width: 100%;
+  box-shadow: none;
+  background: transparent;
+  &:active {
+    border: none;
+  }
+}
+
+.close-icon {
+  font-size: 1.5em;
+  vertical-align: middle;
+  padding-left: .2em;
+}
+
+:host-context(.show-create-card) {
+  .card {
+    display: block;
+  }
+}
