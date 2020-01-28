@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { ListsService } from '../../../providers/lists/lists.service';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../app/reducers/index';
@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './index-sub-list.html',
   styleUrls: ['./index-sub-list.scss']
 })
-export class IndexSubListPage implements OnInit {
+export class IndexSubListPage {
   cursorPositionX = 0;
   locked = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
