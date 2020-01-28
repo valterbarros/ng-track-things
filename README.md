@@ -24,5 +24,5 @@ ng serve # Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`
 
 ## Screenshots
 
-[gif1](https://trello-attachments.s3.amazonaws.com/5b1f32fc8c8a6315142c70be/5b1f32fc8c8a6315142c70cf/64deffb46b571be4a508d4c2f116468b/Screen-Recording-2020-01-27-at-23.48.06.gif)
-[gif2](https://trello-attachments.s3.amazonaws.com/5b1f32fc8c8a6315142c70be/5b1f32fc8c8a6315142c70cf/ac8df742554b2e65bbc71b20d33b8f2f/Screen-Recording-2020-01-27-at-23.39.28.gif)
+![gif1](https://trello-attachments.s3.amazonaws.com/5b1f32fc8c8a6315142c70be/5b1f32fc8c8a6315142c70cf/64deffb46b571be4a508d4c2f116468b/Screen-Recording-2020-01-27-at-23.48.06.gif)
+![gif2](https://trello-attachments.s3.amazonaws.com/5b1f32fc8c8a6315142c70be/5b1f32fc8c8a6315142c70cf/ac8df742554b2e65bbc71b20d33b8f2f/Screen-Recording-2020-01-27-at-23.39.28.gif)
