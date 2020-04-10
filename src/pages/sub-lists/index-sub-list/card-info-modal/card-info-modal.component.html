@@ -1,11 +1,109 @@
 <section class="modal">
-  <nav>
-    <h3 class="title">Create a new card</h3>
-  </nav>
+  <div class="modal-wrapper">
+    <div class="modal-header">
+      <button class="ta-close-icon"></button>
 
-  <form class="card-form">
-    <input type="text">
-    <button class="success-button">Save</button>
-    <button (click)="closeModalHandler()">Cancel</button>
-  </form>
+      <!-- <div class="edit-controls">
+        <button class='ta-close-icon'></button>
+        <button class='ta-close-icon'></button>
+      </div> -->
+    </div>
+
+    <span class="card-title">
+      <span class="text">
+        Este é meu card hehe
+      </span>
+
+      <!-- <el-input
+        type="textarea"
+        placeholder="Write a name for card..."
+        :rows="2"
+        :autosize="true"
+        :autofocus=true
+        v-model="cardDetails.name"
+        v-if="editingName">
+      </el-input> -->
+    </span>
+
+    <div class="card-description">
+      <span class="text">
+        Essa é a descrição desse card
+      </span>
+
+      <!-- <el-input
+        type="textarea"
+        placeholder="Write a description for card..."
+        :rows="2"
+        :autosize="true"
+        :autofocus=true
+        v-model="cardDetails.description"
+        v-if="editingDescription">
+      </el-input> -->
+    </div>
+
+    <div class="card-extras">
+      <div>
+        <!-- <font-awesome-icon icon="tags" style="color: #949292;"></font-awesome-icon> -->
+        <button class="ta-tag"></button>
+        <span class="extras-text">Labels</span>
+      </div>
+
+      <div>
+        <!-- <font-awesome-icon icon="user" style="color: #949292;"></font-awesome-icon> -->
+        <button class="ta-man-people-streamline-user"></button>
+        <span class="extras-text">Members</span>
+      </div>
+      
+      <div>
+        <!-- <font-awesome-icon icon="calendar" style="color: #949292;"></font-awesome-icon> -->
+        <button class="ta-calendar"></button>
+        <span class="extras-text">Due Date</span>
+      </div>
+
+      <div>
+        <!-- <font-awesome-icon icon="tasks" style="color: #949292;"></font-awesome-icon> -->
+        <button class="ta-check-icon"></button>
+        <span class="extras-text">Checklist</span>
+      </div>
+
+      <div>
+        <button class="ta-document-icon"></button>
+        <span (click)="handleAttachmentClick(inputImageUpload)" class="extras-text">Attachment</span>
+      </div>
+
+      <div style="display: none;">
+        <input type="file" #inputImageUpload (change)="handleSelectNewImage">
+      </div>
+    </div>
+
+    <div class="attachments-container">
+      <div class="attachments-header">
+        <span>Attachments</span>
+      </div>
+
+      <div class="attachments-list">
+        <div
+          class="image-container"
+          >
+
+          <img class="image">
+
+          <span class="image-actions">
+            <i class="el-icon-delete delete"></i>
+          </span>
+        </div>
+
+        <div
+          class="upload-progress-load"
+          >
+
+          <span class="percentage">
+            {{ 12 }}%
+          </span>
+
+          <img class="local-image"/>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

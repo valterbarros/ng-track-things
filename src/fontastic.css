@@ -86,3 +86,14 @@
 .ta-info-circled:before {
   content: "\71";
 }
+
+.ta-calendar:before {
+  content: "\70";
+}
+
+.ta-man-people-streamline-user:before {
+  content: "\72";
+}
+.ta-tag:before {
+  content: "\73";
+}

@@ -1,0 +1,147 @@
+.modal {
+  z-index: 9999;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  background: white;
+}
+
+.modal-wrapper {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 4em auto auto 15em 3em auto;
+  color: white;
+}
+
+.modal-header {
+  font-size: 1.6em;
+  padding: 0.7em 0.7em;
+  z-index: 5;
+  background: #9191de;
+  position: sticky;
+  bottom: 0;
+  > .edit-controls {
+    display: flex;
+    justify-content:  space-between;
+  }
+}
+
+.card-title {
+  font-size: 1.8em;
+  padding: 0 0.6em 0.6em;
+  background: #9191de;
+  > .text {
+    word-wrap: break-word;
+  }
+}
+
+.card-description {
+  color: black;
+  padding: 0.9em 0.9em;
+  font-size: 1.2em;
+  > .text {
+    word-wrap: break-word;
+  }
+}
+
+.card-extras {
+  font-size: 1.15em;
+  color: black;
+  border-top: 0.01em solid #bdbcbc;
+  border-bottom: 0.01em solid #bdbcbc;
+  padding: 0.9em 0.9em;
+  background: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .extras-text {
+    font-size: .999em;
+    padding: .5em;
+    color: #484848;
+  }
+}
+
+.attachments-header {
+  color: black;
+  padding: .4em;
+  padding-left: 0.7em;
+  border-bottom: 0.01em solid #bdbcbc;
+  font-size: 1.4em;
+}
+
+.attachments-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0.3em 0.1em;
+  position: relative;
+
+  > .image {
+    flex: 0 1;
+    width: 33.333%;
+    object-fit: cover;
+    height: 9em;
+  }
+}
+
+.image-container {
+  transition: transform 0.5s;
+  flex: 0 1 33.333%;
+  position: relative;
+  z-index: 6;
+  > .image {
+    object-fit: cover;
+    height: 9em;
+    width: 100%;
+  }
+}
+
+.image-actions {
+  color: black;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 1.5em;
+  > * {
+    padding-left: .3em;
+  }
+
+  > .delete {
+    color: #f56c6c;
+  }
+}
+
+.upload-progress-load {
+  flex: 0 1 33.333%;
+  color: black;
+  text-align: center;
+  background: white;
+  font-size: 1.5em;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > .percentage {
+    position: absolute;
+    display: inline-block;
+  }
+}
+
+.local-image {
+  object-fit: cover;
+  width: 100%;
+  height: 6em;
+  flex: 0 1;
+}
+
+.no-visible {
+  opacity: 0;
+}
+
+.visible {
+  opacity: .6;
+}

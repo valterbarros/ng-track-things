@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firebaseDb } from '../firebase';
+import { firebaseDb, firebaseStorage, firebase } from '../firebase';
 import { Observable, from, of } from 'rxjs';
 import { concatMap, mergeMap, map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -162,5 +162,40 @@ export class ListsService {
     reference.set(newCard).catch(err => {
       console.log(err);
     });
+  }
+
+  saveImageOnFileStorageAndUpdateUrlImagesOnCards(file) {
+    // commit('setImageUploadStart', true);
+
+    const uploadTask = firebaseStorage.ref().child(file.name).put(file);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      function handleChange(snapshot) {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+        // commit('setImageUploadProgressValue', Number(progress.toFixed(1)));
+
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      },
+      function handleError(error) {
+        console.log(error);
+      },
+      function handleComplete() {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) => {
+          firebaseDb.collection('cards').doc('state.currentClickedCardId')
+            .update({url_images: firebase.firestore.FieldValue.arrayUnion(downloadUrl)});
+
+          // commit('pushToUrlImagesOnCardDetails', downloadUrl);
+        });
+      });
+
+    return uploadTask;
   }
 }
