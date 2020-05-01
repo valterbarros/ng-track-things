@@ -37,6 +37,6 @@ export class CardInfoModalComponent implements OnInit {
     this.currentLocalImage = buildUrlImage;
     this.uploadDone = false;
 
-    //Save image on firebase and update the card registry on firebase
+    // Save image on firebase and update the card registry on firebase
   }
 }

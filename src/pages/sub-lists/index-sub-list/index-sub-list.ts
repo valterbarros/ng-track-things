@@ -16,6 +16,7 @@ export class IndexSubListPage {
   cursorPositionX = 0;
   locked = false;
   placeHolderCardTemplate: HTMLDivElement = this.generatePlaceHolderCard();
+  cardInfoVisible = false;
 
   // NGRX
   listCount$: Observable<number>;
