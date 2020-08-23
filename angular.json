@@ -125,6 +125,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ng-track-things"
+    }
+  },
+  "defaultProject": "ng-track-things",
+  "cli": {
+    "analytics": "d40b30a7-91b2-48c9-950b-5347bb28a1b2"
+  }
 }

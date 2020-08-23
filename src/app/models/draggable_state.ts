@@ -1,3 +1,4 @@
+import { SubList } from './sub-lists-model';
 export interface State {
   isSmoothed: boolean;
   currentListNumber: number;
