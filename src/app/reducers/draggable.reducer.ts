@@ -17,6 +17,7 @@ export interface State {
   listCount: number;
   clickedSubList: string;
   clickedCard: string;
+  cardInfoModalVisible: boolean;
 }
 
 export const initialState: State = {
@@ -28,7 +29,8 @@ export const initialState: State = {
   subLists: [],
   listCount: 0,
   clickedSubList: '-1',
-  clickedCard: '-1'
+  clickedCard: '-1',
+  cardInfoModalVisible: false
 };
 
 const draggableReducer = createReducer(
@@ -43,6 +45,9 @@ const draggableReducer = createReducer(
   on(DraggableComponentsActions.listCount, (state: State) => ({ ...state, listCount: state.listCount + 1 })),
   on(DraggableComponentsActions.clickedSubList, (state: State, props) => ({ ...state, clickedSubList: props.clickedSubList })),
   on(DraggableComponentsActions.clickedCard, (state: State, props) => ({ ...state, clickedCard: props.clickedCard })),
+  on(DraggableComponentsActions.cardInfoModalVisible, (state: State, props) => {
+    return ({ ...state, cardInfoModalVisible: props.cardInfoModalVisible });
+  }),
 );
 
 export function reducer(state: State | undefined, action: Action) {

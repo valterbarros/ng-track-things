@@ -23,6 +23,7 @@ import { CreateNewCardButtonComponent } from '../pages/sub-lists/index-sub-list/
 import { CreateNewCardComponent } from 'src/pages/sub-lists/index-sub-list/create-new-card/create-new-card.component';
 import { CardInfoModalComponent } from 'src/pages/sub-lists/index-sub-list/card-info-modal/card-info-modal.component';
 import { CardInfoButtonComponent } from 'src/pages/sub-lists/index-sub-list/card-info-button/card-info-button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CardInfoButtonComponent } from 'src/pages/sub-lists/index-sub-list/card
       }
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([AppEffects]),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

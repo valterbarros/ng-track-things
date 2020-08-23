@@ -6,9 +6,9 @@ import { IndexListPage } from '../pages/lists/index-list/index-list';
 import { IndexSubListPage } from '../pages/sub-lists/index-sub-list/index-sub-list';
 
 const routes: Routes = [
-  { path: 'new-list', component: NewListPage },
-  { path: '', component: IndexListPage },
-  { path: 'sub-lists/:listId', component: IndexSubListPage }
+  { path: 'new-list', component: NewListPage, data: { animation: 'NewList' } },
+  { path: '', component: IndexListPage, data: { animation: 'IndexList' } },
+  { path: 'sub-lists/:listId', component: IndexSubListPage, data: { animation: 'IndexSubList' } }
 ];
 
 @NgModule({

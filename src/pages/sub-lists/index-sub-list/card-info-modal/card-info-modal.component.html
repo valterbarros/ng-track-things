@@ -1,7 +1,7 @@
-<section class="modal">
+<section class="modal" *ngIf="isToShowModal$ | async" [@showHide]="'show'">
   <div class="modal-wrapper">
     <div class="modal-header">
-      <button (click)="closeModalHandler()" class="ta-close-icon"></button>
+      <span aria-role="button" (click)="closeModalHandler()" class="ta-close-icon"></span>
 
       <!-- <div class="edit-controls">
         <button class='ta-close-icon'></button>
@@ -44,30 +44,30 @@
     <div class="card-extras">
       <div>
         <!-- <font-awesome-icon icon="tags" style="color: #949292;"></font-awesome-icon> -->
-        <button class="ta-tag"></button>
+        <span aria-role="button" class="ta-tag"></span>
         <span class="extras-text">Labels</span>
       </div>
 
       <div>
         <!-- <font-awesome-icon icon="user" style="color: #949292;"></font-awesome-icon> -->
-        <button class="ta-man-people-streamline-user"></button>
+        <span aria-role="button" class="ta-man-people-streamline-user"></span>
         <span class="extras-text">Members</span>
       </div>
       
       <div>
         <!-- <font-awesome-icon icon="calendar" style="color: #949292;"></font-awesome-icon> -->
-        <button class="ta-calendar"></button>
+        <span aria-role="button" class="ta-calendar"></span>
         <span class="extras-text">Due Date</span>
       </div>
 
       <div>
         <!-- <font-awesome-icon icon="tasks" style="color: #949292;"></font-awesome-icon> -->
-        <button class="ta-check-icon"></button>
+        <span aria-role="button" class="ta-check-icon"></span>
         <span class="extras-text">Checklist</span>
       </div>
 
       <div>
-        <button class="ta-document-icon"></button>
+        <span aria-role="button" class="ta-document-icon"></span>
         <span (click)="handleAttachmentClick(inputImageUpload)" class="extras-text">Attachment</span>
       </div>
 

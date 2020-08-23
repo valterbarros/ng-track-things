@@ -30,7 +30,7 @@ export class CreateNewCardComponent implements OnInit {
   ngOnInit() {}
 
   blurHandler() {
-    // this.listContentDirective.toggleShowCreateCardClass();
+    this.listContentDirective.toggleShowCreateCardClass();
   }
 
   saveCard() {
@@ -47,6 +47,7 @@ export class CreateNewCardComponent implements OnInit {
     };
 
     this.listsService.addNewCardToList(newCard);
+    this.cardNameText = '';
   }
 
   focusTextArea() {

@@ -43,21 +43,5 @@
       ></create-new-card-button>
     </div>
   </div>
-
-  <!-- <create-new-card-modal :dialogVisible="dialogVisible"
-    :subListId="currentSubListId"
-    @change-dialog-visible-value="handleChangeDialogVisibleValue"
-    @put-new-card-to-sub-list="putNewCardToSubList"
-  ></create-new-card-modal> -->
-
-  <card-info-modal
-    *ngIf="cardInfoVisible"
-    (closeModal)="cardInfoVisible = false"
-  >
-  </card-info-modal>
-
-  <!-- <create-new-card-modal
-    (closeModal)="showNewCardModal = false"
-    *ngIf="showNewCardModal">
-  </create-new-card-modal> -->
+  <card-info-modal></card-info-modal>
 </div>

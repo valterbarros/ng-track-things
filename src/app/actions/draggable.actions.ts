@@ -10,6 +10,12 @@ export const requestSublist = createAction('[Draggable Components] requestSublis
 export const subList = createAction('[Draggable Components] subList', props<{ subList: SubList; }>());
 export const resetSubList = createAction('[Draggable Components] reset subList');
 export const listCount = createAction('[Draggable Components] listCount');
-export const reorderCards = createAction('[Draggable Components] reorderCards', props<{list: {fromId: string, toId: string}, oldIndex: number, newIndex: number}>());
+export const reorderCards = createAction(
+  '[Draggable Components] reorderCards',
+  props<{list: {fromId: string, toId: string}, oldIndex: number, newIndex: number}>()
+);
 export const clickedSubList = createAction('[Draggable Components] clickedSubList', props<{ clickedSubList: string; }>());
 export const clickedCard = createAction('[Draggable Components] clickedCard', props<{ clickedCard: string; }>());
+export const cardInfoModalVisible = createAction(
+  '[Draggable Components] cardInfoModalVisible', props<{ cardInfoModalVisible: boolean; }>()
+);

@@ -5,22 +5,22 @@ import { CreateNewCardComponent } from '../pages/sub-lists/index-sub-list/create
   selector: '.list'
 })
 export class ListContentDirective {
-  constructor(private _elemRef: ElementRef) {}
+  constructor(elemRef: ElementRef) {
+    setTimeout(() => {
+      this._addHasScrollClass = elemRef.nativeElement.scrollHeight > elemRef.nativeElement.clientHeight;
+    });
+  }
   @ContentChild(CreateNewCardComponent, {static: false})
   createNewCardComponent: CreateNewCardComponent;
 
   @HostBinding('class.show-create-card') private _addShowCreateCardClass = false;
   @HostBinding('class.has-scroll') private _addHasScrollClass = false;
 
-  @HostListener('scroll', ['$event'])
-  handleScrollEventChange() {
-    this._addHasScrollClass = true;
-  }
-
   toggleShowCreateCardClass() {
     this._addShowCreateCardClass = !this._addShowCreateCardClass;
   }
 
+  // Circular dependency
   focusCardTitleTextarea() {
     this.createNewCardComponent.focusTextArea();
   }
