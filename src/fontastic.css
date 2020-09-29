@@ -97,3 +97,23 @@
 .ta-tag:before {
   content: "\73";
 }
+
+.ta-check-outline:before {
+  content: "\74";
+}
+.ta-data:before {
+  content: "\75";
+}
+
+.ta-floppy-o:before {
+  content: "\76";
+}
+
+.ta-close-strong:before {
+  content: "\77";
+}
+
+.ta-reload:before {
+  content: "\78";
+}
+

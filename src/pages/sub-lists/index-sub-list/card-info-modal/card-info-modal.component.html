@@ -1,67 +1,50 @@
 <section class="modal" *ngIf="isToShowModal$ | async" [@showHide]="'show'">
   <div class="modal-wrapper">
     <div class="modal-header">
-      <span aria-role="button" (click)="closeModalHandler()" class="ta-close-icon"></span>
+      <span *ngIf="!editingTitle && !editingDescription" aria-role="button" (click)="closeModalHandler()" class="ta-close-strong"></span>
 
-      <!-- <div class="edit-controls">
-        <button class='ta-close-icon'></button>
-        <button class='ta-close-icon'></button>
-      </div> -->
+      <div class="edit-controls" *ngIf="editingTitle || editingDescription">
+        <span (click)="closeEdit()" aria-role="button" class="ta-reload"></span>
+        <span (click)="saveChange()" aria-role="button" class="ta-floppy-o"></span>
+      </div>
     </div>
 
     <span class="card-title">
-      <span class="text">
-        Este é meu card hehe
-      </span>
-
-      <!-- <el-input
-        type="textarea"
+      <textarea
+        class="card-textarea white"
+        (focus)="editingTitle = true"
         placeholder="Write a name for card..."
-        :rows="2"
-        :autosize="true"
-        :autofocus=true
-        v-model="cardDetails.name"
-        v-if="editingName">
-      </el-input> -->
+        [(ngModel)]="card.name"
+      >
+      </textarea>
     </span>
 
     <div class="card-description">
-      <span class="text">
-        Essa é a descrição desse card
-      </span>
-
-      <!-- <el-input
-        type="textarea"
+      <textarea
+        (focus)="editingDescription = true"
+        class="card-textarea black"
         placeholder="Write a description for card..."
-        :rows="2"
-        :autosize="true"
-        :autofocus=true
-        v-model="cardDetails.description"
-        v-if="editingDescription">
-      </el-input> -->
+        [(ngModel)]="card.description">
+      </textarea>
     </div>
 
     <div class="card-extras">
       <div>
-        <!-- <font-awesome-icon icon="tags" style="color: #949292;"></font-awesome-icon> -->
         <span aria-role="button" class="ta-tag"></span>
         <span class="extras-text">Labels</span>
       </div>
 
       <div>
-        <!-- <font-awesome-icon icon="user" style="color: #949292;"></font-awesome-icon> -->
         <span aria-role="button" class="ta-man-people-streamline-user"></span>
         <span class="extras-text">Members</span>
       </div>
       
       <div>
-        <!-- <font-awesome-icon icon="calendar" style="color: #949292;"></font-awesome-icon> -->
         <span aria-role="button" class="ta-calendar"></span>
         <span class="extras-text">Due Date</span>
       </div>
 
       <div>
-        <!-- <font-awesome-icon icon="tasks" style="color: #949292;"></font-awesome-icon> -->
         <span aria-role="button" class="ta-check-icon"></span>
         <span class="extras-text">Checklist</span>
       </div>
@@ -72,7 +55,7 @@
       </div>
 
       <div style="display: none;">
-        <input type="file" #inputImageUpload (change)="handleSelectNewImage">
+        <input type="file" #inputImageUpload (change)="handleSelectNewImage()">
       </div>
     </div>
 

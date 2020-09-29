@@ -18,7 +18,6 @@ export class CreateNewCardButtonComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.subListId);
   }
 
   handleNewButtonClick() {

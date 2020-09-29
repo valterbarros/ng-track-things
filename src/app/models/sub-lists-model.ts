@@ -4,6 +4,7 @@ export interface Card {
   name: string;
   order: number;
   sub_list_id: string;
+  urlImages?: Array<string>;
 }
 
 export interface SubList {

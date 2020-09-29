@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { firebaseDb, firebaseStorage, firebase } from '../firebase';
-import { Observable, from, of } from 'rxjs';
-import { concatMap, mergeMap, map } from 'rxjs/operators';
+import { Observable, EMPTY } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../app/reducers/index';
 import * as DraggableComponentsActions from '../../app/actions/draggable.actions';
@@ -190,12 +189,30 @@ export class ListsService {
       function handleComplete() {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) => {
           firebaseDb.collection('cards').doc('state.currentClickedCardId')
-            .update({url_images: firebase.firestore.FieldValue.arrayUnion(downloadUrl)});
+            .update({urlImages: firebase.firestore.FieldValue.arrayUnion(downloadUrl)});
 
           // commit('pushToUrlImagesOnCardDetails', downloadUrl);
         });
       });
 
     return uploadTask;
+  }
+
+  getCard(cardId: string): Observable<Card> {
+    if (cardId === '-1') { return EMPTY; }
+
+    return new Observable((obs) => {
+      console.log(cardId);
+
+      firebaseDb.collection('cards').doc(cardId).get().then((documentSnapshot) => {
+        console.log(documentSnapshot);
+
+        const { urlImages = [] } = documentSnapshot.data();
+
+        obs.next({ ...documentSnapshot.data(), urlImages } as Card);
+      }).catch((err) => {
+        obs.error(err);
+      });
+    });
   }
 }

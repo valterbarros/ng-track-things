@@ -145,3 +145,24 @@
 .visible {
   opacity: .6;
 }
+
+.card-textarea {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  -moz-box-shadow:none;
+  outline: none !important;
+  &.white {
+    color: white;
+  }
+  
+  &.black {
+    color: black;
+  }
+}
+
+.close-icon {
+  font-size: 20px;
+}
