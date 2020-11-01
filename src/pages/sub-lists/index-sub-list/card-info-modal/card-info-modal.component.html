@@ -1,7 +1,12 @@
 <section class="modal" *ngIf="isToShowModal$ | async" [@showHide]="'show'">
   <div class="modal-wrapper">
     <div class="modal-header">
-      <span *ngIf="!editingTitle && !editingDescription" aria-role="button" (click)="closeModalHandler()" class="ta-close-strong"></span>
+      <span
+        *ngIf="!editingTitle && !editingDescription"
+        aria-role="button"
+        (click)="closeModalHandler()"
+        class="ta-close-strong"
+      ></span>
 
       <div class="edit-controls" *ngIf="editingTitle || editingDescription">
         <span (click)="closeEdit()" aria-role="button" class="ta-reload"></span>
@@ -55,7 +60,7 @@
       </div>
 
       <div style="display: none;">
-        <input type="file" #inputImageUpload (change)="handleSelectNewImage()">
+        <input type="file" #inputImageUpload (change)="handleSelectNewImage($event)">
       </div>
     </div>
 
@@ -67,26 +72,45 @@
       <div class="attachments-list">
         <div
           class="image-container"
-          >
+          *ngFor="let imageUrl of card.urlImages; let imageIndex = index"
+          (click)="handleExpandImage(imageIndex, $event)"
+          [ngStyle]="imageIndex === imageClickedIndex ? styleImageObject : {}"
+        >
 
-          <img class="image">
+          <img class="image" [src]="imageUrl">
 
           <span class="image-actions">
-            <i class="el-icon-delete delete"></i>
+            <i
+              aria-role="button"
+              class="ta-trash-icon delete"
+              (click)="handleRemoveImage($event, imageUrl)"
+            ></i>
           </span>
         </div>
 
         <div
+          *ngIf="!uploadDone"
           class="upload-progress-load"
-          >
+          [class.visible]="uploadStart"
+          [class.no-visible]="!uploadStart"
+        >
 
           <span class="percentage">
             {{ 12 }}%
           </span>
 
-          <img class="local-image"/>
+          <img class="local-image" [src]="currentLocalImage" />
         </div>
       </div>
+    </div>
+
+    <div
+      [@showHideShadow]="'show'"
+      *ngIf="imageIsTransformed"
+      class="full-background-shadow"
+      (click)="closeFullBackgroundShadow()"
+    >
+      <i class="la-close-icon closebackground"></i>
     </div>
   </div>
 </section>

@@ -6,14 +6,14 @@ import { State } from '../../app/reducers/index';
 import * as DraggableComponentsActions from '../../app/actions/draggable.actions';
 import { Card } from 'src/app/models/sub-lists-model';
 
-// Move tha to utils maybe or another file
+// Move that to utils maybe or another file
 function getSublistByIdFunction(subLists, id) {
   return subLists.find((subList) => {
     return subList.id === id;
   });
 }
 
-// Move tha to utils maybe or another file
+// Move that to utils maybe or another file
 function updateCardsPositionAndParentListId(cardsCollection, listId) {
   let order = 0;
 
@@ -27,6 +27,12 @@ function updateCardsPositionAndParentListId(cardsCollection, listId) {
       sub_list_id: listId
     });
   });
+}
+
+// Move that to utils maybe or another file
+function removeElementFromUrlImages (cardId: string, imageUrl: string) {
+  return firebaseDb.collection('cards').doc(cardId)
+    .update({urlImages: firebase.firestore.FieldValue.arrayRemove(imageUrl)})
 }
 
 @Injectable({
@@ -163,39 +169,66 @@ export class ListsService {
     });
   }
 
-  saveImageOnFileStorageAndUpdateUrlImagesOnCards(file) {
-    // commit('setImageUploadStart', true);
-
-    const uploadTask = firebaseStorage.ref().child(file.name).put(file);
-
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      function handleChange(snapshot) {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        // commit('setImageUploadProgressValue', Number(progress.toFixed(1)));
-
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
-            break;
-        }
-      },
-      function handleError(error) {
-        console.log(error);
-      },
-      function handleComplete() {
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) => {
-          firebaseDb.collection('cards').doc('state.currentClickedCardId')
-            .update({urlImages: firebase.firestore.FieldValue.arrayUnion(downloadUrl)});
-
-          // commit('pushToUrlImagesOnCardDetails', downloadUrl);
+  saveImageOnFileStorageAndUpdateUrlImagesOnCards(file: File, cardId: string) {
+    return new Observable((obs) => {
+      const uploadTask = firebaseStorage.ref().child(file.name).put(file);
+  
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        function handleChange(snapshot) {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        },
+        function handleError(error) {
+          console.log(error);
+          obs.error(error)
+        },
+        function handleComplete() {
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadUrl) => {
+            firebaseDb.collection('cards').doc(cardId)
+              .update({urlImages: firebase.firestore.FieldValue.arrayUnion(downloadUrl)}).then(() => {
+                obs.next('done');
+              }).catch((err) => {
+                obs.error(err)
+              }).finally(() => {
+                obs.complete();
+              })
+          });
         });
-      });
+    });
+  }
 
-    return uploadTask;
+  removeImageFromFileStorageAndRemoveUrlImageFromCards (cardId: string, imageUrl: string) {
+    return new Observable((obs) => {
+      firebaseStorage.refFromURL(imageUrl).delete().then(() => {
+        removeElementFromUrlImages(cardId, imageUrl).then(() => {
+          obs.next('done');
+        }).catch((err) => {
+          obs.error(err);
+          console.log(err);
+        }).finally(() => {
+          obs.complete();
+        });
+      }).catch(function (error) {
+        if (error.code === 'storage/object-not-found') {
+          removeElementFromUrlImages(cardId, imageUrl).then(() => {
+            obs.next('done');
+          }).catch((err) => {
+            obs.error(err);
+            console.log(err);
+          }).finally(() => {
+            obs.complete();
+          });
+        }
+      })
+    })
   }
 
   getCard(cardId: string): Observable<Card> {
@@ -214,5 +247,9 @@ export class ListsService {
         obs.error(err);
       });
     });
+  }
+
+  editNameOrDescriptionFromCard (cardId: string, card) {
+    return firebaseDb.collection('cards').doc(cardId).update(card);
   }
 }
