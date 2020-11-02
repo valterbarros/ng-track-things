@@ -60,13 +60,10 @@ export class CardInfoModalComponent implements OnInit {
   uploadStart = false;
   imageIsTransformed = false;
   imageClickedIndex: number;
-  imageCoordinator = {
-    x: '0px',
-    y: '0px'
-  }
-  styleImageObject: { transform: string, zIndex: number } = {
+  styleImageObject: { transform: string, zIndex: number, transformOrigin: string } = {
     transform: '',
-    zIndex: 8
+    zIndex: 8,
+    transformOrigin: ''
   }
 
   constructor(
@@ -139,33 +136,33 @@ export class CardInfoModalComponent implements OnInit {
       return;
     }
 
-    const viewportHeight = window.innerHeight;
-    const imageSizeHeightScaled = e.currentTarget.getBoundingClientRect().height * 2.5;
-
-    // Calculate top discount
-    const topBeforeImageTransform = e.currentTarget.getBoundingClientRect().top;
-    const topDiscount = imageSizeHeightScaled - e.currentTarget.getBoundingClientRect().height;
-    const futureTopImageSize = topBeforeImageTransform - (topDiscount / 2);
-
-    // now has 248 of viewport top      
-    // e quanto eu quero que ele tenha?
-    console.log(futureTopImageSize);
-
-    const subtract = viewportHeight - imageSizeHeightScaled;
-    const dividSubtract = subtract / 2;
-    const topfinalValue = futureTopImageSize - dividSubtract;
-
-    console.log(futureTopImageSize);
-    console.log(dividSubtract);
-
     this.imageClickedIndex = index;
 
-    this.imageCoordinator.x = '103%';
-    this.imageCoordinator.y = `${-topfinalValue}px`;
+    //-- y position
+    const viewportHeight = window.innerHeight;
+
+    const imageSizeHeightScaled = e.currentTarget.getBoundingClientRect().height * 2.5;
+
+    const imageBottom = e.currentTarget.getBoundingClientRect().bottom;
+    const subtractScreenByImageBottomPosition = viewportHeight - imageBottom;
+
+    const middleRestOfScreenAndImage = (imageSizeHeightScaled - viewportHeight) / 2;
+    
+    const finalPositionY = subtractScreenByImageBottomPosition + middleRestOfScreenAndImage;
+
+    //--- x position
+    const viewportWidth = window.innerWidth;
+    const imageSizeWidthScaled = e.currentTarget.getBoundingClientRect().width * 2.5;
+    const xCoordinator = (viewportWidth - imageSizeWidthScaled) / 2;
+
+    const leftBeforeTransformation = e.currentTarget.getBoundingClientRect().left;
+
+    const finalPositionX = xCoordinator - leftBeforeTransformation
 
     this.styleImageObject = {
-      transform: `translate(${this.imageCoordinator.x}, ${this.imageCoordinator.y}) scale(2.5)`,
-      zIndex: 15
+      transform: `translate(${finalPositionX}px,${finalPositionY}px) scale(2.5)`,
+      zIndex: 15,
+      transformOrigin: 'bottom left'
     }
 
     this.imageIsTransformed = true;
@@ -176,7 +173,8 @@ export class CardInfoModalComponent implements OnInit {
 
     this.styleImageObject = {
       transform: 'translate(0, 0) scale(1)',
-      zIndex: 8
+      zIndex: 8,
+      transformOrigin: 'bottom left'
     }
   }
 
